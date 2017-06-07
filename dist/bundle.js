@@ -1376,14 +1376,19 @@ module.exports = {
         	m("ul.dynamicList", 
                 [List.list.map(function(text) {
                     return m("li", [
-                        m("div.roundedTwo", [
-                            m("input", {type: "checkbox",
-                                        id: "roundedTwo"}),
-                            m("label", {for: "roundedTwo"})]),
+                        m("div", [
+                        m("input", {type: "checkbox"}
+                            // [
+                            // m("input", {type: "checkbox",
+                            //             id: "roundedTwo"}),
+                            // m("label", {for: "roundedTwo"})]
+                            ),
                         m("div.task", text)])
-                })]),
+                            ])
+                })
+                ]),
         	m("nav.menu", [
-        		m("div", "1 item left"),
+        		m("div", "" + List.listLen +" item left"),
         		m("button", {//href: "/All", oncreate: m.route.link,
                     onclick: console.log(List.list)}, "All"),
         		m("button", {//href: "/Active", oncreate: m.route.link,
