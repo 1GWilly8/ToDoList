@@ -1259,47 +1259,46 @@ m.route(document.body, "/All", {
 var m = require("mithril")
 var Element = require("./ListElement")
 
-module.exports = function() {
-	var ToDoList = {
-		list: [],
-		listLen: 0,
+    var ToDoList = {
+        list: [],
+        listLen: 0,
 
-		addToList: function(text) {
-			element = new Element,
-			element.add(this.listLen, "Active", text),
-			this.list[this.listLen] = element,
-			console.log(this.list[this.listLen].text),
-			console.log(this.list),
-			this.listLen ++
-		},
+        addToList: function(text) {
+            element = new Element;
+            element.add(this.listLen, "Active", text);
+            this.list[this.listLen] = element;
+            console.log(this.list[this.listLen].text);
+            console.log(this.list);
+            this.listLen++
+        },
 
-		displayList: function(state) {
-			displayList: [];
-			acc: 0;
-			for (var i = this.listLen - 1; i >= 0; i--) {
-				if (this.list[i].tag == state) {
-					this.displayList[this.acc] = this.list[i],
-					this.acc++
-				}
-			}
-			//console.log(this.displayList);
-			return this.displayList;
-		},
+        displayList: function(state) {
+            var displayList = [];
+        	if (state == "All"){
+        		return this.list
+        	}
+                for (var i = this.listLen - 1; i >= 0; i--) {
+                    console.log(i, this.list[i])
+                    if (this.list[i].tag == state) {
+                        displayList.push(this.list[i])
+                    }
+                }
+            return displayList;
+        },
 
-		markCompleted: function(id) {	
-			this.list[id].tag = "Completed",
-			console.log(this.list)
-		},
+        markCompleted: function(id) {
+            this.list[id].tag = "Completed";
+            console.log(this.list)
+        },
 
-		removeFromList: function(id) {
-			this.list.remove(id)
-			this.listLen --;
-			console.log(this.list)
-		}
-	}
-	
-	return ToDoList;
-}
+        removeFromList: function(id) {
+            this.list.remove(id)
+            this.listLen--;
+            console.log(this.list)
+        }
+    }
+
+module.exports = ToDoList;
 
 },{"./ListElement":4,"mithril":1}],4:[function(require,module,exports){
 // src/model/ListElement
@@ -1335,79 +1334,127 @@ module.exports = function() {
 },{"mithril":1}],5:[function(require,module,exports){
 // src/views/Active.js
 var m = require("mithril")
+var List = require("../model/List");
 
 module.exports = {
-	view: function() {
-		return m("div", "hi")
-	}
-}
-},{"mithril":1}],6:[function(require,module,exports){
-// src/views/Dashboard.js
+    view: function() {
+        var todos = List.displayList("Active");
+        // console.log('List object:', List)
+        // var elem = document.getElementById("ulList");
+        // console.log(todos);
+        // elem = [
+            return todos.map(function(text) {
+                return m("li", [
+                    m("div", [
+                        m("input", { type: "checkbox" }),
+                        m("div.task", text)
+                    ])
+                ])
+            })
+        // ]
 
+    }
+}
+
+},{"../model/List":3,"mithril":1}],6:[function(require,module,exports){
+// src/views/Active.js
 var m = require("mithril")
+var List = require("../model/List");
 
 module.exports = {
-	view: function() {
-		return m("div", "hi")
-	}
+    view: function() {
+        var todos = List.displayList("Completed");
+        // console.log('List object:', List)
+        // var elem = document.getElementById("ulList");
+        // console.log(todos);
+        // elem = [
+            return todos.map(function(text) {
+                return m("li", [
+                    m("div", [
+                        m("input", { type: "checkbox" }),
+                        m("div.task", text)
+                    ])
+                ])
+            })
+        // ]
+
+    }
 }
-},{"mithril":1}],7:[function(require,module,exports){
-arguments[4][6][0].apply(exports,arguments)
-},{"dup":6,"mithril":1}],8:[function(require,module,exports){
+
+},{"../model/List":3,"mithril":1}],7:[function(require,module,exports){
+// src/views/Active.js
+var m = require("mithril")
+var List = require("../model/List");
+
+module.exports = {
+    view: function() {
+        var todos = List.displayList("All");
+        // console.log('List object:', List)
+        // var elem = document.getElementById("ulList");
+        // console.log(todos);
+        // elem = [
+            return todos.map(function(text) {
+                return m("li", [
+                    m("div", [
+                        m("input", { type: "checkbox" }),
+                        m("div.task", text)
+                    ])
+                ])
+            })
+        // ]
+
+    }
+}
+},{"../model/List":3,"mithril":1}],8:[function(require,module,exports){
 // src/views/Layout.js
 var m = require("mithril")
-var List = require("../model/List")();
+var List = require("../model/List");
 
 module.exports = {
-	//keystrokes: "",
+    //keystrokes: "",
     view: function(vnode) {
         return m("main.layout", [
-        	m("header.title", "ToDo"),
-        	m("input.input", {
+            m("header.title", "todos"),
+            m("input.input", {
                 placeholder: "What needs to be done?",
-        		onkeydown: function(e) {
-        			if(e.keyCode == 13 && e.target.value != "") {
+                onkeydown: function(e) {
+                    if (e.keyCode == 13 && e.target.value != "") {
                         List.addToList(e.target.value);
                         e.target.value = '';
                         console.log("List.list is now equal to: ", List.list)
-        			}
-        		}
-          	}),
-        	m("ul.dynamicList", 
-                [List.list.map(function(text) {
-                    return m("li", [
-                        m("div", [
-                        m("input", {type: "checkbox"}
-                            // [
-                            // m("input", {type: "checkbox",
-                            //             id: "roundedTwo"}),
-                            // m("label", {for: "roundedTwo"})]
-                            ),
-                        m("div.task", text)])
-                            ])
-                })
-                ]),
-        	m("nav.menu", [
-        		m("div", "" + List.listLen +" item left"),
-        		m("button", {//href: "/All", oncreate: m.route.link,
-                    onclick: console.log(List.list)}, "All"),
-        		m("button", {//href: "/Active", oncreate: m.route.link,
-                    onclick: List.displayList("Active")}, "Active"),
-        		m("button", {//href: "/Completed", oncreate: m.route.link,
-                    onclick: List.displayList("Completed")}, "Completed"),
-        		m("button", {
-        			oninput: function() {
-        				
-        			}
-        		}, "Clear Completed")
-        	])
+                    }
+                }
+            }),
+            m("ul.dynamicList[id='ulList']", vnode.children),
+            // m("ul.dynamicList[id='ulList']", [
+            //     List.list.map(function(text) {
+            //         return m("li", [
+            //             m("div", [
+            //                 m("input", { type: "checkbox" }),
+            //                 m("div.task", text)
+            //             ])
+            //         ])
+            //     })
+            // ]),
+            m("nav.menu", [
+                m("div", "" + List.listLen + " item left"),
+                m("a", { href: "/All", oncreate: m.route.link }, "All"),
+                m("a", { href: "/Active", oncreate: m.route.link }, "Active"),
+                m("a", { href: "/Completed", oncreate: m.route.link }, "Completed"),
+                m("a", {
+                    oninput: function() {
+
+                    }
+                }, "Clear Completed")
+            ])
         ])
     }
 }
 
 
-    // m("nav.menu", [
-    //     m("a[href='#!/list']", {oncreate: m.route.link}, "Users")
-    // ]),
-    // m("section", vnode.children)
+// m("nav.menu", [
+//     m("a[href='#!/list']", {oncreate: m.route.link}, "Users")
+// ]),
+// m("section", vnode.children)
+
 },{"../model/List":3,"mithril":1}]},{},[2]);
