@@ -1261,15 +1261,13 @@ var Element = require("./ListElement")
 
     var ToDoList = {
         list: [],
-        listLen: 0,
 
         addToList: function(text) {
             element = new Element;
-            element.add(this.listLen, "Active", text);
-            this.list[this.listLen] = element;
-            console.log(this.list[this.listLen].text);
+            element.add(this.list.length, "Active", text);
+            this.list[this.list.length] = element;
+            console.log(this.list[this.list.length].text);
             console.log(this.list);
-            this.listLen++
         },
 
         displayList: function(state) {
@@ -1277,7 +1275,7 @@ var Element = require("./ListElement")
         	if (state == "All"){
         		return this.list
         	}
-                for (var i = this.listLen - 1; i >= 0; i--) {
+                for (var i = this.list.length - 1; i >= 0; i--) {
                     console.log(i, this.list[i])
                     if (this.list[i].tag == state) {
                         displayList.push(this.list[i])
@@ -1293,7 +1291,6 @@ var Element = require("./ListElement")
 
         removeFromList: function(id) {
             this.list.splice(id, 1);
-            this.listLen = this.list.length;
             console.log(id)
             console.log(this.list)
         }

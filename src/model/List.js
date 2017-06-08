@@ -4,7 +4,6 @@ var Element = require("./ListElement")
 
     var ToDoList = {
         list: [],
-        list.length: 0,
 
         addToList: function(text) {
             element = new Element;
@@ -12,7 +11,6 @@ var Element = require("./ListElement")
             this.list[this.list.length] = element;
             console.log(this.list[this.list.length].text);
             console.log(this.list);
-            this.list.length++
         },
 
         displayList: function(state) {
@@ -36,7 +34,6 @@ var Element = require("./ListElement")
 
         removeFromList: function(id) {
             this.list.splice(id, 1);
-            this.list.length = this.list.length;
             console.log(id)
             console.log(this.list)
         }
