@@ -33,7 +33,7 @@ module.exports = {
                 m("a", { href: "/All", oncreate: m.route.link }, "All"),
                 m("a", { href: "/Active", oncreate: m.route.link }, "Active"),
                 m("a", { href: "/Completed", oncreate: m.route.link }, "Completed"),
-                m("a", {
+                m("button[type=button]", {
                     oninput: function() {
 
                     }

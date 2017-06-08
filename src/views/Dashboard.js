@@ -9,11 +9,11 @@ module.exports = {
         // var elem = document.getElementById("ulList");
         // console.log(todos);
         // elem = [
-            return todos.map(function(text) {
+            return todos.map(function(object) {
                 return m("li", [
                     m("div", [
                         m("input", { type: "checkbox" }),
-                        m("div.task", text)
+                        m("div.task", object.text)
                     ])
                 ])
             })
