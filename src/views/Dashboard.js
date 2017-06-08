@@ -22,6 +22,10 @@ module.exports = {
                                 if (isCheck) {
                                     List.markCompleted(object.id);
                                 }
+                                else{
+                                	console.log("workingggg");
+                                	List.markActive(object.id);
+                                }
                             }
                         }),
                         m("div.task", object.text),

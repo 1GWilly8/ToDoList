@@ -12,7 +12,8 @@ module.exports = {
             return todos.map(function(object) {
                 return m("li", [
                     m("div", [
-                        m("input", { type: "checkbox" }),
+                        m("input", { type: "checkbox", oninit: List.checkboxOnOff(true),  checked: List.checkboxState
+                    }),
                         m("div.task", object.text)
                     ])
                 ])

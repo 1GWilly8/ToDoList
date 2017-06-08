@@ -4,12 +4,17 @@ var Element = require("./ListElement")
 
     var ToDoList = {
         list: [],
+        checkboxState: false,
+
+        checkboxOnOff: function(boolean){
+        	this.checkboxState = boolean
+        },
 
         addToList: function(text) {
             element = new Element;
             element.add(this.list.length, "Active", text);
             this.list[this.list.length] = element;
-            console.log(this.list[this.list.length].text);
+            console.log(this.list[this.list.length - 1].text);
             console.log(this.list);
         },
 
@@ -32,6 +37,10 @@ var Element = require("./ListElement")
             console.log(this.list)
         },
 
+        markActive: function(id) {
+            this.list[id].tag = "Active";
+            console.log(this.list[id].tag)
+        },
         removeFromList: function(id) {
             this.list.splice(id, 1);
             console.log(id)
