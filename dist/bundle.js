@@ -1261,12 +1261,11 @@ var Element = require("./ListElement")
 
     var ToDoList = {
         list: [],
-
         addToList: function(text) {
             element = new Element;
             element.add(this.list.length, "Active", text);
             this.list[this.list.length] = element;
-            console.log(this.list[this.list.length].text);
+            console.log(this.list[this.list.length - 1].text);
             console.log(this.list);
         },
 
@@ -1289,6 +1288,11 @@ var Element = require("./ListElement")
             console.log(this.list)
         },
 
+         markActive: function(id) {
+            this.list[id].tag = "Active";
+            console.log(this.list)
+        },
+
         removeFromList: function(id) {
             this.list.splice(id, 1);
             console.log(id)
@@ -1307,6 +1311,7 @@ module.exports = function() {
 		id: -1,
 		tag: "",
 		text: "",
+		checkboxState: false,
 
 		add: function(tmpId, tmpTag, tmpText) {
 			this.id = tmpId,
@@ -1314,17 +1319,9 @@ module.exports = function() {
 			this.text = tmpText
 		},
 
-		displayId: function() {
-
-		},
-
-		displayTag: function() {
-
-		},
-
-		displayText: function() {
-			return this.text
-		}		
+		switchState: function() {
+			this.checkboxState = !this.checkboxState
+		}
 	}
 
 	return Element;
@@ -1370,14 +1367,16 @@ module.exports = {
                     m("div", [
                         m("input", {
                             type: "checkbox",
+
                             onclick: function() {
                                 var isCheck = m.withAttr("checked");
-                                console.log(arguments);
-                                console.log(isCheck);
                                 if (isCheck) {
                                     List.markCompleted(object.id);
+                                    List.list[object.id].switchState
                                 }
-                            }
+                            },
+                            checked: List.checkboxState
+
                         }),
                         m("div.task", object.text),
 
@@ -1409,7 +1408,18 @@ module.exports = {
             return todos.map(function(object) {
                 return m("li", [
                     m("div", [
-                        m("input", { type: "checkbox" }),
+                        m("input", { type: "checkbox",  onclick: function() {
+                                var isCheck = m.withAttr("checked");
+                                if (!isCheck) {
+                                    List.markActive(object.id);
+                                    List.list[object.id].switchState
+                                } else {
+                                	List.markCompleted(object.id);
+                                    List.list[object.id].switchState
+                                }
+                            },
+                             checked: List.list[object.id].checkboxState
+                    }),
                         m("div.task", object.text)
                     ])
                 ])
@@ -1443,6 +1453,8 @@ module.exports = {
                                 console.log(isCheck);
                                 if (isCheck) {
                                     List.markCompleted(object.id);
+                                    List.list[object.id].switchState
+
                                 }
                             }
                         }),

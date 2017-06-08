@@ -21,6 +21,8 @@ module.exports = {
                                 console.log(isCheck);
                                 if (isCheck) {
                                     List.markCompleted(object.id);
+                                    List.list[object.id].switchState
+
                                 }
                             }
                         }),

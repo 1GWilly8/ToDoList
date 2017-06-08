@@ -6,6 +6,7 @@ module.exports = function() {
 		id: -1,
 		tag: "",
 		text: "",
+		checkboxState: false,
 
 		add: function(tmpId, tmpTag, tmpText) {
 			this.id = tmpId,
@@ -13,17 +14,9 @@ module.exports = function() {
 			this.text = tmpText
 		},
 
-		displayId: function() {
-
-		},
-
-		displayTag: function() {
-
-		},
-
-		displayText: function() {
-			return this.text
-		}		
+		switchState: function() {
+			this.checkboxState = !this.checkboxState
+		}
 	}
 
 	return Element;

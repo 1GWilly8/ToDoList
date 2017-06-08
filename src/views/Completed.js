@@ -12,7 +12,18 @@ module.exports = {
             return todos.map(function(object) {
                 return m("li", [
                     m("div", [
-                        m("input", { type: "checkbox" }),
+                        m("input", { type: "checkbox",  onclick: function() {
+                                var isCheck = m.withAttr("checked");
+                                if (!isCheck) {
+                                    List.markActive(object.id);
+                                    List.list[object.id].switchState
+                                } else {
+                                	List.markCompleted(object.id);
+                                    List.list[object.id].switchState
+                                }
+                            },
+                             checked: List.list[object.id].checkboxState
+                    }),
                         m("div.task", object.text)
                     ])
                 ])

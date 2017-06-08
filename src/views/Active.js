@@ -38,14 +38,16 @@ module.exports = {
                     m("div", [
                         m("input", {
                             type: "checkbox",
+
                             onclick: function() {
                                 var isCheck = m.withAttr("checked");
-                                console.log(arguments);
-                                console.log(isCheck);
                                 if (isCheck) {
                                     List.markCompleted(object.id);
+                                    List.list[object.id].switchState
                                 }
-                            }
+                            },
+                            checked: List.checkboxState
+
                         }),
                         m("div.task", object.text),
 
