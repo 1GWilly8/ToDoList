@@ -33,7 +33,7 @@ module.exports = {
         // var elem = document.getElementById("ulList");
         // console.log(todos);
         // elem = [
-        return todos.map(function(object, id) {
+        return todos.map(function(object, index) {
                 return m("li", [
                     m("div", [
                         m("input", {
@@ -44,14 +44,16 @@ module.exports = {
                                 console.log(isCheck);
                                 if (isCheck) {
                                     List.markCompleted(object.id);
-                                    m.withAttr("checked", function() {
-                                        console.log("test");
-                                        return false;
-                                    })
                                 }
                             }
                         }),
-                        m("div.task", object.text)
+                        m("div.task", object.text),
+
+                        m("button", {
+                            onclick: function() {
+                                List.removeFromList(index);
+                            }
+                        }, "delete")
                     ])
                 ])
             })

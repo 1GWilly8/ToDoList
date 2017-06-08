@@ -1292,8 +1292,9 @@ var Element = require("./ListElement")
         },
 
         removeFromList: function(id) {
-            this.list.remove(id)
-            this.listLen--;
+            this.list.splice(id, 1);
+            this.listLen = this.list.length;
+            console.log(id)
             console.log(this.list)
         }
     }
@@ -1367,7 +1368,7 @@ module.exports = {
         // var elem = document.getElementById("ulList");
         // console.log(todos);
         // elem = [
-        return todos.map(function(object, id) {
+        return todos.map(function(object, index) {
                 return m("li", [
                     m("div", [
                         m("input", {
@@ -1378,14 +1379,16 @@ module.exports = {
                                 console.log(isCheck);
                                 if (isCheck) {
                                     List.markCompleted(object.id);
-                                    m.withAttr("checked", function() {
-                                        console.log("test");
-                                        return false;
-                                    })
                                 }
                             }
                         }),
-                        m("div.task", object.text)
+                        m("div.task", object.text),
+
+                        m("button", {
+                            onclick: function() {
+                                List.removeFromList(index);
+                            }
+                        }, "delete")
                     ])
                 ])
             })
@@ -1424,6 +1427,7 @@ module.exports = {
 var m = require("mithril")
 var List = require("../model/List");
 
+
 module.exports = {
     view: function() {
         var todos = List.displayList("All");
@@ -1431,15 +1435,31 @@ module.exports = {
         // var elem = document.getElementById("ulList");
         // console.log(todos);
         // elem = [
-            return todos.map(function(object) {
+        return todos.map(function(object) {
                 return m("li", [
                     m("div", [
-                        m("input", { type: "checkbox" }),
-                        m("div.task", object.text)
+                        m("input", {
+                            type: "checkbox",
+                            onclick: function() {
+                                var isCheck = m.withAttr("checked");
+                                console.log(arguments);
+                                console.log(isCheck);
+                                if (isCheck) {
+                                    List.markCompleted(object.id);
+                                }
+                            }
+                        }),
+                        m("div.task", object.text),
+
+                        m("button", {
+                            onclick: function() {
+                            	List.removeFromList(object.id);
+                            }
+                        }, "delete")
                     ])
                 ])
             })
-        // ]
+            // ]
 
     }
 }
@@ -1475,13 +1495,18 @@ module.exports = {
             //     })
             // ]),
             m("nav.menu", [
-                m("div", "" + List.listLen + " item left"),
+                m("div", "" + List.list.length + " item left"),
                 m("a", { href: "/All", oncreate: m.route.link }, "All"),
                 m("a", { href: "/Active", oncreate: m.route.link }, "Active"),
                 m("a", { href: "/Completed", oncreate: m.route.link }, "Completed"),
                 m("button[type=button]", {
-                    oninput: function() {
-
+                    onclick: function() {
+                        // List.list = [];
+                        // List.listLen = 0;
+                         var complete = List.displayList("Completed");
+                         for(var i = 0; i < complete.length; i++){
+                            List.removeFromList(complete[i].id);
+                        }
                     }
                 }, "Clear Completed")
             ])

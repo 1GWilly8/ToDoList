@@ -29,13 +29,18 @@ module.exports = {
             //     })
             // ]),
             m("nav.menu", [
-                m("div", "" + List.listLen + " item left"),
+                m("div", "" + List.list.length + " item left"),
                 m("a", { href: "/All", oncreate: m.route.link }, "All"),
                 m("a", { href: "/Active", oncreate: m.route.link }, "Active"),
                 m("a", { href: "/Completed", oncreate: m.route.link }, "Completed"),
                 m("button[type=button]", {
-                    oninput: function() {
-
+                    onclick: function() {
+                        // List.list = [];
+                        // List.listLen = 0;
+                         var complete = List.displayList("Completed");
+                         for(var i = 0; i < complete.length; i++){
+                            List.removeFromList(complete[i].id);
+                        }
                     }
                 }, "Clear Completed")
             ])
