@@ -6,11 +6,7 @@ var List = require("../model/List");
 module.exports = {
     view: function() {
         var todos = List.displayList("All");
-        // console.log('List object:', List)
-        // var elem = document.getElementById("ulList");
-        // console.log(todos);
-        // elem = [
-        return todos.map(function(object) {
+        return todos.map(function(object, index) {
                 return m("li", [
                     m("div", [
                         m("input", {
@@ -28,11 +24,11 @@ module.exports = {
                                 }
                             }
                         }),
-                        m("div.task", object.text),
+                        m("div", object.text),
 
                         m("button", {
                             onclick: function() {
-                            	List.removeFromList(object.id);
+                            	List.removeFromList(index);
                             }
                         }, "delete")
                     ])

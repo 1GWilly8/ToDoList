@@ -5,16 +5,18 @@ var List = require("../model/List");
 module.exports = {
     view: function() {
         var todos = List.displayList("Completed");
-        // console.log('List object:', List)
-        // var elem = document.getElementById("ulList");
-        // console.log(todos);
-        // elem = [
-            return todos.map(function(object) {
+            return todos.map(function(object, index) {
                 return m("li", [
                     m("div", [
                         m("input", { type: "checkbox", oninit: List.checkboxOnOff(true),  checked: List.checkboxState
                     }),
-                        m("div.task", object.text)
+                        m("div", object.text),
+
+                        m("button", {
+                            onclick: function() {
+                                List.removeFromList(index);
+                            }
+                        }, "delete")
                     ])
                 ])
             })

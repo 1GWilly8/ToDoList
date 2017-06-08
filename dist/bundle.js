@@ -1280,7 +1280,7 @@ var Element = require("./ListElement")
         	if (state == "All"){
         		return this.list
         	}
-                for (var i = this.list.length - 1; i >= 0; i--) {
+                for (var i = 0; i <= this.list.length - 1; i++) {
                     console.log(i, this.list[i])
                     if (this.list[i].tag == state) {
                         displayList.push(this.list[i])
@@ -1343,37 +1343,9 @@ module.exports = function() {
 var m = require("mithril")
 var List = require("../model/List");
 
-
-// module.exports = {
-//     view: function() {
-//         var todos = List.displayList("Active");
-//         // console.log('List object:', List)
-//         // var elem = document.getElementById("ulList");
-//         // console.log(todos);
-//         // elem = [
-//             return todos.map(function(object) {
-//                 return m("li", [
-//                     m("div", [
-//                         m("input", { type: "checkbox" }),
-//                         m("div.task", object.text)
-//                     ])
-//                 ])
-//             })
-//         // ]
-
-//     }
-// }
-
-
-
-
 module.exports = {
     view: function() {
         var todos = List.displayList("Active");
-        // console.log('List object:', List)
-        // var elem = document.getElementById("ulList");
-        // console.log(todos);
-        // elem = [
         return todos.map(function(object, index) {
                 return m("li", [
                     m("div", [
@@ -1390,7 +1362,7 @@ module.exports = {
                             checked: List.checkboxState
 
                         }),
-                        m("div.task", object.text),
+                        m("div", object.text),
 
                         m("button", {
                             onclick: function() {
@@ -1413,29 +1385,22 @@ var List = require("../model/List");
 module.exports = {
     view: function() {
         var todos = List.displayList("Completed");
-        // console.log('List object:', List)
-        // var elem = document.getElementById("ulList");
-        // console.log(todos);
-        // elem = [
-        return todos.map(function(object) {
+            return todos.map(function(object, index) {
                 return m("li", [
                     m("div", [
-                        m("input", {
-                            type: "checkbox",
-                            oninit: List.checkboxOnOff(true),
+                        m("input", { type: "checkbox", oninit: List.checkboxOnOff(true),  checked: List.checkboxState
+                    }),
+                        m("div", object.text),
+
+                        m("button", {
                             onclick: function() {
-                                var isCheck = m.withAttr("checked");
-                                if (!isCheck) {
-                                    List.markActive(object.id);
-                                }
-                            },
-                            checked: List.checkboxState
-                        }),
-                        m("div.task", object.text)
+                                List.removeFromList(index);
+                            }
+                        }, "delete")
                     ])
                 ])
             })
-            // ]
+        // ]
 
     }
 }
@@ -1449,11 +1414,7 @@ var List = require("../model/List");
 module.exports = {
     view: function() {
         var todos = List.displayList("All");
-        // console.log('List object:', List)
-        // var elem = document.getElementById("ulList");
-        // console.log(todos);
-        // elem = [
-        return todos.map(function(object) {
+        return todos.map(function(object, index) {
                 return m("li", [
                     m("div", [
                         m("input", {
@@ -1466,15 +1427,16 @@ module.exports = {
                                     List.markCompleted(object.id);
                                 }
                                 else{
+                                	console.log("workingggg");
                                 	List.markActive(object.id);
                                 }
                             }
                         }),
-                        m("div.task", object.text),
+                        m("div", object.text),
 
                         m("button", {
                             onclick: function() {
-                            	List.removeFromList(object.id);
+                            	List.removeFromList(index);
                             }
                         }, "delete")
                     ])
@@ -1492,53 +1454,113 @@ var List = require("../model/List");
 module.exports = {
     //keystrokes: "",
     view: function(vnode) {
-        return m("main.layout", [
-            m("header.title", "todos"),
-            m("input.input", {
-                placeholder: "What needs to be done?",
-                onkeydown: function(e) {
-                    if (e.keyCode == 13 && e.target.value != "") {
-                        List.addToList(e.target.value);
-                        e.target.value = '';
-                        console.log("List.list is now equal to: ", List.list)
-                    }
-                }
-            }),
-            m("ul.dynamicList[id='ulList']", vnode.children),
-            // m("ul.dynamicList[id='ulList']", [
-            //     List.list.map(function(text) {
-            //         return m("li", [
-            //             m("div", [
-            //                 m("input", { type: "checkbox" }),
-            //                 m("div.task", text)
-            //             ])
-            //         ])
-            //     })
-            // ]),
-            m("nav.menu", [
-                m("div", "" + List.list.length + " item left"),
-                m("a", { href: "/All", oncreate: m.route.link }, "All"),
-                m("a", { href: "/Active", oncreate: m.route.link }, "Active"),
-                m("a", { href: "/Completed", oncreate: m.route.link }, "Completed"),
-                m("button[type=button]", {
-                    onclick: function() {
-                        // List.list = [];
-                        // List.listLen = 0;
-                         var complete = List.displayList("Completed");
-                         for(var i = 0; i < complete.length; i++){
-                            List.removeFromList(complete[i].id);
-                        }
-                    }
-                }, "Clear Completed")
+        return m("div.container" [
+            m("div.row", [
+                m("div.col-md-4"),
+                m("div.col-md-4"),
+                m("div.col-md-4")
+            ]),
+            m("div.row", [
+                m("div.col-md-4"),
+                m("div.col-md-4",
+                    m("main", [
+                        m("header", "todos"),
+                        m("div.jumbotron", [
+                            m("input", {
+                                type: "checkbox",
+                                onclick: function() {
+                                    var setComp = List.displayList("All");
+                                    for (var i = 0; i < setComp.length; i++) {
+                                        List.markCompleted(setComp[i].id);
+                                    }
+                                }
+                            }),
+                            m("input", {
+                                placeholder: "What needs to be done?",
+                                onkeydown: function(e) {
+                                    if (e.keyCode == 13 && e.target.value != "") {
+                                        List.addToList(e.target.value);
+                                        e.target.value = '';
+                                        console.log("List.list is now equal to: ", List.list)
+                                    }
+                                }
+                            }),
+                            m("ul", vnode.children),
+
+                            m("nav", [
+                                m("div", "" + List.list.length + " item left"),
+                                m("a", { href: "/All", oncreate: m.route.link }, "All"),
+                                m("a", { href: "/Active", oncreate: m.route.link }, "Active"),
+                                m("a", { href: "/Completed", oncreate: m.route.link }, "Completed"),
+                                m("button[type=button]", {
+                                    onclick: function() {
+                                        // List.list = [];
+                                        // List.listLen = 0;
+                                        var complete = List.displayList("Completed");
+                                        for (var i = 0; i < complete.length; i++) {
+                                            List.removeFromList(complete[i].id);
+                                        }
+                                    }
+                                }, "Clear Completed")
+                            ])
+                        ])
+                    ])
+                ),
+                m("div.col-md-4")
+            ]),
+            m("div.row", [
+                m("div.col-md-4"),
+                m("div.col-md-4"),
+                m("div.col-md-4")
+            ]),
+            m("div.row", [
+                m("div.col-md-4"),
+                m("div.col-md-4"),
+                m("div.col-md-4")
             ])
         ])
+
     }
 }
 
+// m("main", [
+//     m("header", "todos"),
+//     m("div.jumbotron", [
+//         m("input", {type: "checkbox", onclick: function(){
+//             var setComp = List.displayList("All");
+//                     for (var i = 0; i < setComp.length; i++) {
+//                         List.markCompleted(setComp[i].id);
+//                     }
+//         } }),            
+//         m("input", {
+//             placeholder: "What needs to be done?",
+//             onkeydown: function(e) {
+//                 if (e.keyCode == 13 && e.target.value != "") {
+//                     List.addToList(e.target.value);
+//                     e.target.value = '';
+//                     console.log("List.list is now equal to: ", List.list)
+//                 }
+//             }
+//         }),
+//         m("ul", vnode.children),
 
-// m("nav.menu", [
-//     m("a[href='#!/list']", {oncreate: m.route.link}, "Users")
-// ]),
-// m("section", vnode.children)
+//         m("nav", [
+//             m("div", "" + List.list.length + " item left"),
+//             m("a", { href: "/All", oncreate: m.route.link }, "All"),
+//             m("a", { href: "/Active", oncreate: m.route.link }, "Active"),
+//             m("a", { href: "/Completed", oncreate: m.route.link }, "Completed"),
+//             m("button[type=button]", {
+//                 onclick: function() {
+//                     // List.list = [];
+//                     // List.listLen = 0;
+//                     var complete = List.displayList("Completed");
+//                     for (var i = 0; i < complete.length; i++) {
+//                         List.removeFromList(complete[i].id);
+//                     }
+//                 }
+//             }, "Clear Completed")
+//         ])
+//     ])
+// ])
 
 },{"../model/List":3,"mithril":1}]},{},[2]);

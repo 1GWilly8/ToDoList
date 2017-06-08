@@ -23,7 +23,7 @@ var Element = require("./ListElement")
         	if (state == "All"){
         		return this.list
         	}
-                for (var i = this.list.length - 1; i >= 0; i--) {
+                for (var i = 0; i <= this.list.length - 1; i++) {
                     console.log(i, this.list[i])
                     if (this.list[i].tag == state) {
                         displayList.push(this.list[i])
