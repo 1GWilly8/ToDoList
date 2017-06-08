@@ -6,18 +6,18 @@ var Layout = require("./views/Layout")
 var Completed = require("./views/Completed")
 
 
-m.route(document.body, "/All", {
-    "/All": {
+m.route(document.body, "/All:All", {
+    "/All:state": {
     	render: function() {
     	return m(Layout, m(Dashboard))
     	}
 	},
-    "/Active": {
+    "/Active:state": {
     	render: function() {
     		return m(Layout, m(Active))
     	}
     },
-    "/Completed": {
+    "/Completed:state": {
         render: function() {
             return m(Layout, m(Completed))
         }

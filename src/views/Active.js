@@ -5,33 +5,29 @@ var List = require("../model/List");
 module.exports = {
     view: function() {
         var todos = List.displayList("Active");
-        return todos.map(function(object, index) {
+        return todos.map(function(object) {
                 return m("li", [
                     m("div", [
                         m("input", {
                             type: "checkbox",
-                            oninit: List.checkboxOnOff(false),
+                            checked: false,
                             onclick: function() {
-                                var isCheck = m.withAttr("checked");
-                                if (isCheck) {
-                                    List.markCompleted(object.id);
-                                    List.checkboxOnOff(false);
+                            	object.toggleState()
+                                if (List.list[object.id].checkboxState == false) {
+                                	List.list[object.id].tag = "Active"
+                                } else {
+                                	List.list[object.id].tag = "Completed"
                                 }
-                            },
-                            checked: List.checkboxState
-
-                        }),
-                        m("div", object.text),
-
-                        m("button", {
-                            onclick: function() {
-                                List.removeFromList(index);
+                                console.log("click frm act", 
+                            		List.list[object.id].checkboxState);
                             }
-                        }, "delete")
+                        }),
+                        m("div.task", object.text),
+                        m("button", "delete")
                     ])
                 ])
-            })
-            // ]
+            }
+        )
 
     }
 }
