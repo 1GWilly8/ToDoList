@@ -38,12 +38,12 @@ module.exports = {
                     m("div", [
                         m("input", {
                             type: "checkbox",
-
+                            oninit: List.checkboxOnOff(false),
                             onclick: function() {
                                 var isCheck = m.withAttr("checked");
                                 if (isCheck) {
                                     List.markCompleted(object.id);
-                                    List.list[object.id].switchState
+                                    List.checkboxOnOff(false);
                                 }
                             },
                             checked: List.checkboxState

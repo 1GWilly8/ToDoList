@@ -4,6 +4,13 @@ var Element = require("./ListElement")
 
     var ToDoList = {
         list: [],
+      ,
+
+        checkboxOnOff: function(boolean){
+        	Element.checkboxState = boolean,
+        	console.log(this.checkboxState)
+        },
+
         addToList: function(text) {
             element = new Element;
             element.add(this.list.length, "Active", text);
