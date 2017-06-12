@@ -18,25 +18,21 @@ module.exports = {
                     m("div.jumbotron", [
                         m("div.input-group", [
                             m("span.input-group-addon",
-                                m("div.checkboxFour", [
-                                    m("input.checkbox[id='checkboxFourInput']", {
-                                        checked: function() {
-                                            var act = List.displayList("Active");
-                                            if (act != 0){
-                                                return false;
-                                            }
-                                        }
-                                    }, {
+                                (List.list.length > 0) ? [
+                                    m("input", {
                                         type: "checkbox",
+                                        checked: List.allstatechecked,
                                         onclick: function() {
                                             var setComp = List.displayList("Active");
                                             if (setComp.length == 0) {
+                                                List.allstatechecked = false;
                                                 var setAct = List.displayList("Completed");
                                                 for (var i = 0; i < setAct.length; i++) {
                                                     List.list[setAct[i].id].toggleState(),
                                                         List.list[setAct[i].id].tag = "Active"
                                                 }
                                             } else {
+                                                List.allstatechecked = true;
                                                 for (var i = 0; i < setComp.length; i++) {
                                                     List.list[setComp[i].id].toggleState(),
                                                         List.list[setComp[i].id].tag = "Completed"
@@ -44,9 +40,7 @@ module.exports = {
                                             }
                                         }
                                     }),
-                                    m("label[for='checkboxFourInput']")
-                                ])
-                            ),
+                                ] : "", ),
                             m("input.form-control", {
                                 type: "text",
                                 placeholder: "What needs to be done?",
@@ -54,7 +48,7 @@ module.exports = {
                                     if (e.keyCode == 13 && e.target.value != "") {
                                         List.addToList(e.target.value);
                                         e.target.value = '';
-                                        console.log("List.list is now equal to: ", List.list)
+                                        List.allstatechecked = false;
                                     }
                                 }
                             })

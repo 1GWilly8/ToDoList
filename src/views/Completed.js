@@ -10,21 +10,23 @@ module.exports = {
                 return m("li.todoLi", [
                     m("div.input-group", [
                         m("span.input-group-addon",
-                          m("input", { type: "checkbox", checked: List.list[object.id].checkboxState,
-                            onclick: function() {
-                                object.toggleState()
-                                if (List.list[object.id].checkboxState == false) {
-                                    List.list[object.id].tag = "Active"
-                                } else {
-                                    List.list[object.id].tag = "Completed"
+                            m("input", {
+                                type: "checkbox",
+                                checked: List.list[object.id].checkboxState,
+                                onclick: function() {
+                                    object.toggleState()
+                                    if (List.list[object.id].checkboxState == false) {
+                                        List.allstatechecked = false,
+                                            List.list[object.id].tag = "Active"
+                                    } else {
+                                        List.list[object.id].tag = "Completed"
+                                    }
+                                    List.checkAllComp();
                                 }
-                                console.log("click frm comp",
-                                    List.list[object.id].checkboxState);
-                            }
-                    })
+                            })
                         ),
                         m("div.form-control", object.text),
-                          m("span.input-group-btn ",
+                        m("span.input-group-btn ",
                             m("button.btn-no-marg", {
                                 onclick: function() {
                                     List.removeFromList(index);

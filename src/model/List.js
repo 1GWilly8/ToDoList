@@ -2,16 +2,13 @@
 var m = require("mithril")
 var Element = require("./ListElement")
 
-//var oldList = localStorage.getItem(JSON.parse("list"))
-
 var ToDoList = {
     list: [],
-
+    allstatechecked: false,
     addToList: function(text) {
         element = new Element,
         element.add(this.list.length, "Active", text),
         this.list[this.list.length] = element
-        // localStorage.setItem(JSON.stringify(list))
     },
 
     displayList: function(state) {
@@ -30,7 +27,6 @@ var ToDoList = {
 
     markCompleted: function(id) {   
         this.list[id].tag = "Completed"
-        // localStorage.setItem(JSON.stringify(list))
     },
 
     removeFromList: function(id) {
@@ -39,7 +35,18 @@ var ToDoList = {
             this.list[i].id = this.list[i].id - 1
             
         }
-        // localStorage.setItem(JSON.stringify(list))
+        this.checkAllComp();
+    },
+
+    checkAllComp: function() {
+        var allItems = this.displayList("Active");
+        if (allItems.length == 0) {
+            console.log(this.allstatechecked)
+            this.allstatechecked = true
+        } else {
+            console.log(this.allstatechecked)
+            this.allstatechecked = false
+        }
     }
 }
     

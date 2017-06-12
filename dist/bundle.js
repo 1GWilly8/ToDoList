@@ -1259,16 +1259,13 @@ m.route(document.body, "/All", {
 var m = require("mithril")
 var Element = require("./ListElement")
 
-//var oldList = localStorage.getItem(JSON.parse("list"))
-
 var ToDoList = {
     list: [],
-
+    allstatechecked: false,
     addToList: function(text) {
         element = new Element,
         element.add(this.list.length, "Active", text),
         this.list[this.list.length] = element
-        // localStorage.setItem(JSON.stringify(list))
     },
 
     displayList: function(state) {
@@ -1287,7 +1284,6 @@ var ToDoList = {
 
     markCompleted: function(id) {   
         this.list[id].tag = "Completed"
-        // localStorage.setItem(JSON.stringify(list))
     },
 
     removeFromList: function(id) {
@@ -1296,12 +1292,22 @@ var ToDoList = {
             this.list[i].id = this.list[i].id - 1
             
         }
-        // localStorage.setItem(JSON.stringify(list))
+        this.checkAllComp();
+    },
+
+    checkAllComp: function() {
+        var allItems = this.displayList("Active");
+        if (allItems.length == 0) {
+            console.log(this.allstatechecked)
+            this.allstatechecked = true
+        } else {
+            console.log(this.allstatechecked)
+            this.allstatechecked = false
+        }
     }
 }
     
     module.exports = ToDoList;
-
 },{"./ListElement":4,"mithril":1}],4:[function(require,module,exports){
 // src/model/ListElement
 var m = require("mithril")
@@ -1345,10 +1351,12 @@ module.exports = {
                             onclick: function() {
                                 object.toggleState()
                                 if (List.list[object.id].checkboxState == false) {
+                                    List.allstatechecked = false,
                                     List.list[object.id].tag = "Active"
                                 } else {
                                     List.list[object.id].tag = "Completed"
                                 }
+                                List.checkAllComp();
                             }
 
                         })
@@ -1381,21 +1389,23 @@ module.exports = {
                 return m("li.todoLi", [
                     m("div.input-group", [
                         m("span.input-group-addon",
-                          m("input", { type: "checkbox", checked: List.list[object.id].checkboxState,
-                            onclick: function() {
-                                object.toggleState()
-                                if (List.list[object.id].checkboxState == false) {
-                                    List.list[object.id].tag = "Active"
-                                } else {
-                                    List.list[object.id].tag = "Completed"
+                            m("input", {
+                                type: "checkbox",
+                                checked: List.list[object.id].checkboxState,
+                                onclick: function() {
+                                    object.toggleState()
+                                    if (List.list[object.id].checkboxState == false) {
+                                        List.allstatechecked = false,
+                                            List.list[object.id].tag = "Active"
+                                    } else {
+                                        List.list[object.id].tag = "Completed"
+                                    }
+                                    List.checkAllComp();
                                 }
-                                console.log("click frm comp",
-                                    List.list[object.id].checkboxState);
-                            }
-                    })
+                            })
                         ),
                         m("div.form-control", object.text),
-                          m("span.input-group-btn ",
+                        m("span.input-group-btn ",
                             m("button.btn-no-marg", {
                                 onclick: function() {
                                     List.removeFromList(index);
@@ -1423,17 +1433,19 @@ module.exports = {
                     m("div.input-group", [
                         m("span.input-group-addon",
                             m("input", {
-                                type: "checkbox",
-                                checked: List.list[object.id].checkboxState,
-                                onclick: function() {
-                                    object.toggleState()
-                                    if (List.list[object.id].checkboxState == false) {
-                                        List.list[object.id].tag = "Active"
-                                    } else {
-                                        List.list[object.id].tag = "Completed"
-                                    }
+                            type: "checkbox",
+                            checked: List.list[object.id].checkboxState,
+                            onclick: function() {
+                                object.toggleState()
+                                if (List.list[object.id].checkboxState == false) {
+                                    List.allstatechecked = false,
+                                    List.list[object.id].tag = "Active"
+                                } else {
+                                    List.list[object.id].tag = "Completed"
                                 }
-                            })
+                                List.checkAllComp();
+                            }
+                        })
                         ),
                         m("div.form-control", object.text),
                         m("span.input-group-btn ",
@@ -1491,18 +1503,21 @@ module.exports = {
                     m("div.jumbotron", [
                         m("div.input-group", [
                             m("span.input-group-addon",
-                                m("div.checkboxFour", [
-                                    m("input.checkbox[id='checkboxFourInput']", {
+                                (List.list.length > 0) ? [
+                                    m("input", {
                                         type: "checkbox",
+                                        checked: List.allstatechecked,
                                         onclick: function() {
                                             var setComp = List.displayList("Active");
                                             if (setComp.length == 0) {
+                                                List.allstatechecked = false;
                                                 var setAct = List.displayList("Completed");
                                                 for (var i = 0; i < setAct.length; i++) {
                                                     List.list[setAct[i].id].toggleState(),
                                                         List.list[setAct[i].id].tag = "Active"
                                                 }
                                             } else {
+                                                List.allstatechecked = true;
                                                 for (var i = 0; i < setComp.length; i++) {
                                                     List.list[setComp[i].id].toggleState(),
                                                         List.list[setComp[i].id].tag = "Completed"
@@ -1510,9 +1525,7 @@ module.exports = {
                                             }
                                         }
                                     }),
-                                    m("label[for='checkboxFourInput']")
-                                ])
-                            ),
+                                ] : "", ),
                             m("input.form-control", {
                                 type: "text",
                                 placeholder: "What needs to be done?",
@@ -1520,7 +1533,7 @@ module.exports = {
                                     if (e.keyCode == 13 && e.target.value != "") {
                                         List.addToList(e.target.value);
                                         e.target.value = '';
-                                        console.log("List.list is now equal to: ", List.list)
+                                        List.allstatechecked = false;
                                     }
                                 }
                             })

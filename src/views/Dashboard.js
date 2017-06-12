@@ -11,17 +11,19 @@ module.exports = {
                     m("div.input-group", [
                         m("span.input-group-addon",
                             m("input", {
-                                type: "checkbox",
-                                checked: List.list[object.id].checkboxState,
-                                onclick: function() {
-                                    object.toggleState()
-                                    if (List.list[object.id].checkboxState == false) {
-                                        List.list[object.id].tag = "Active"
-                                    } else {
-                                        List.list[object.id].tag = "Completed"
-                                    }
+                            type: "checkbox",
+                            checked: List.list[object.id].checkboxState,
+                            onclick: function() {
+                                object.toggleState()
+                                if (List.list[object.id].checkboxState == false) {
+                                    List.allstatechecked = false,
+                                    List.list[object.id].tag = "Active"
+                                } else {
+                                    List.list[object.id].tag = "Completed"
                                 }
-                            })
+                                List.checkAllComp();
+                            }
+                        })
                         ),
                         m("div.form-control", object.text),
                         m("span.input-group-btn ",

@@ -1,10 +1,10 @@
 {
-  "name": "ToDo",
+  "name": "todo",
   "version": "1.0.0",
-  "description": "",
   "main": "gulpfile.js",
   "dependencies": {
     "browserify": "^14.4.0",
+    "express": "^4.15.3",
     "gulp": "^3.9.1",
     "mithril": "^1.1.1"
   },
@@ -14,5 +14,14 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gayw18/ToDoList.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gayw18/ToDoList/issues"
+  },
+  "homepage": "https://github.com/gayw18/ToDoList#readme",
+  "description": ""
 }
