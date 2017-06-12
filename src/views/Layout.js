@@ -5,28 +5,50 @@ var List = require("../model/List");
 module.exports = {
     //keystrokes: "",
     view: function(vnode) {
-        return m("div.container" [
+        return m("div.container", [
             m("div.row", [
                 m("div.col-md-4"),
                 m("div.col-md-4"),
                 m("div.col-md-4")
             ]),
             m("div.row", [
-                m("div.col-md-4"),
-                m("div.col-md-4",
-                    m("main", [
-                        m("header", "todos"),
-                        m("div.jumbotron", [
-                            m("input", {
-                                type: "checkbox",
-                                onclick: function() {
-                                    var setComp = List.displayList("All");
-                                    for (var i = 0; i < setComp.length; i++) {
-                                        List.markCompleted(setComp[i].id);
-                                    }
-                                }
-                            }),
-                            m("input", {
+                m("div.col-md-3"),
+                m("div.col-md-5",
+                    m("h1.titleH", "todos"),
+                    m("div.jumbotron", [
+                        m("div.input-group", [
+                            m("span.input-group-addon",
+                                m("div.checkboxFour", [
+                                    m("input.checkbox[id='checkboxFourInput']", {
+                                        checked: function() {
+                                            var act = List.displayList("Active");
+                                            if (act != 0){
+                                                return false;
+                                            }
+                                        }
+                                    }, {
+                                        type: "checkbox",
+                                        onclick: function() {
+                                            var setComp = List.displayList("Active");
+                                            if (setComp.length == 0) {
+                                                var setAct = List.displayList("Completed");
+                                                for (var i = 0; i < setAct.length; i++) {
+                                                    List.list[setAct[i].id].toggleState(),
+                                                        List.list[setAct[i].id].tag = "Active"
+                                                }
+                                            } else {
+                                                for (var i = 0; i < setComp.length; i++) {
+                                                    List.list[setComp[i].id].toggleState(),
+                                                        List.list[setComp[i].id].tag = "Completed"
+                                                }
+                                            }
+                                        }
+                                    }),
+                                    m("label[for='checkboxFourInput']")
+                                ])
+                            ),
+                            m("input.form-control", {
+                                type: "text",
                                 placeholder: "What needs to be done?",
                                 onkeydown: function(e) {
                                     if (e.keyCode == 13 && e.target.value != "") {
@@ -35,29 +57,29 @@ module.exports = {
                                         console.log("List.list is now equal to: ", List.list)
                                     }
                                 }
-                            }),
-                            m("ul", vnode.children),
+                            })
+                        ]),
+                        m("ul", vnode.children),
 
-                            m("nav", [
-                                m("div", "" + List.list.length + " item left"),
-                                m("a", { href: "/All", oncreate: m.route.link }, "All"),
-                                m("a", { href: "/Active", oncreate: m.route.link }, "Active"),
-                                m("a", { href: "/Completed", oncreate: m.route.link }, "Completed"),
-                                m("button[type=button]", {
-                                    onclick: function() {
-                                        // List.list = [];
-                                        // List.listLen = 0;
-                                        var complete = List.displayList("Completed");
-                                        for (var i = 0; i < complete.length; i++) {
-                                            List.removeFromList(complete[i].id);
-                                        }
-                                    }
-                                }, "Clear Completed")
-                            ])
-                        ])
+                    ]),
+
+                    m("nav.nav navbar-default", [
+                        m("p.navbar-text", "" + List.list.length + " item left"),
+                        m("button.btn btn-default navbar-btn", { href: "/All", oncreate: m.route.link }, "All"),
+                        m("button.btn btn-default navbar-btn", { href: "/Active", oncreate: m.route.link }, "Active"),
+                        m("button.btn btn-default navbar-btn", { href: "/Completed", oncreate: m.route.link }, "Completed"),
+                        m("button.btn btn-link navbar-btn[type=button]", {
+                            onclick: function() {
+                                var complete = List.displayList("Completed");
+                                for (var i = 0; i < complete.length; i++) {
+                                    List.removeFromList(complete[i].id);
+                                }
+                            }
+                        }, "Clear Completed")
                     ])
+
                 ),
-                m("div.col-md-4")
+                m("div.col-md-3")
             ]),
             m("div.row", [
                 m("div.col-md-4"),
@@ -75,14 +97,15 @@ module.exports = {
 }
 
 // m("main", [
-//     m("header", "todos"),
-//     m("div.jumbotron", [
-//         m("input", {type: "checkbox", onclick: function(){
-//             var setComp = List.displayList("All");
-//                     for (var i = 0; i < setComp.length; i++) {
-//                         List.markCompleted(setComp[i].id);
-//                     }
-//         } }),            
+// m("header", "todos"),
+// m("div.jumbotron", [
+//     m("input", {type: "checkbox", 
+//         onclick: function(){
+//         var setComp = List.displayList("All");
+//                 for (var i = 0; i < setComp.length; i++) {
+//                     List.markCompleted(setComp[i].id);
+//                 }
+//     } }),            
 //         m("input", {
 //             placeholder: "What needs to be done?",
 //             onkeydown: function(e) {

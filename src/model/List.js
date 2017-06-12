@@ -2,50 +2,45 @@
 var m = require("mithril")
 var Element = require("./ListElement")
 
-    var ToDoList = {
-        list: [],
-        checkboxState: false,
+//var oldList = localStorage.getItem(JSON.parse("list"))
 
-        checkboxOnOff: function(boolean){
-        	this.checkboxState = boolean
-        },
+var ToDoList = {
+    list: [],
 
-        addToList: function(text) {
-            element = new Element;
-            element.add(this.list.length, "Active", text);
-            this.list[this.list.length] = element;
-            console.log(this.list[this.list.length - 1].text);
-            console.log(this.list);
-        },
+    addToList: function(text) {
+        element = new Element,
+        element.add(this.list.length, "Active", text),
+        this.list[this.list.length] = element
+        // localStorage.setItem(JSON.stringify(list))
+    },
 
-        displayList: function(state) {
-            var displayList = [];
-        	if (state == "All"){
-        		return this.list
-        	}
-                for (var i = 0; i <= this.list.length - 1; i++) {
-                    console.log(i, this.list[i])
-                    if (this.list[i].tag == state) {
-                        displayList.push(this.list[i])
-                    }
-                }
-            return displayList;
-        },
-
-        markCompleted: function(id) {
-            this.list[id].tag = "Completed";
-            console.log(this.list)
-        },
-
-        markActive: function(id) {
-            this.list[id].tag = "Active";
-            console.log(this.list[id].tag)
-        },
-        removeFromList: function(id) {
-            this.list.splice(id, 1);
-            console.log(id)
-            console.log(this.list)
+    displayList: function(state) {
+        if (state == "All") {
+            return this.list
         }
-    }
 
-module.exports = ToDoList;
+        var displayList = [];
+        for (var i = 0; i < this.list.length; i++) {
+            if (this.list[i].tag == state) {
+                displayList.push(this.list[i])
+            }
+        }
+        return displayList;
+    },
+
+    markCompleted: function(id) {   
+        this.list[id].tag = "Completed"
+        // localStorage.setItem(JSON.stringify(list))
+    },
+
+    removeFromList: function(id) {
+        this.list.splice(id, 1);
+        for (var i = id; i < this.list.length; i++) {
+            this.list[i].id = this.list[i].id - 1
+            
+        }
+        // localStorage.setItem(JSON.stringify(list))
+    }
+}
+    
+    module.exports = ToDoList;

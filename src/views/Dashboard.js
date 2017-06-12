@@ -7,30 +7,29 @@ module.exports = {
     view: function() {
         var todos = List.displayList("All");
         return todos.map(function(object, index) {
-                return m("li", [
-                    m("div", [
-                        m("input", {
-                            type: "checkbox",
-                            onclick: function() {
-                                var isCheck = m.withAttr("checked");
-                                console.log(arguments);
-                                console.log(isCheck);
-                                if (isCheck) {
-                                    List.markCompleted(object.id);
+                return m("li.todoLi", [
+                    m("div.input-group", [
+                        m("span.input-group-addon",
+                            m("input", {
+                                type: "checkbox",
+                                checked: List.list[object.id].checkboxState,
+                                onclick: function() {
+                                    object.toggleState()
+                                    if (List.list[object.id].checkboxState == false) {
+                                        List.list[object.id].tag = "Active"
+                                    } else {
+                                        List.list[object.id].tag = "Completed"
+                                    }
                                 }
-                                else{
-                                	console.log("workingggg");
-                                	List.markActive(object.id);
+                            })
+                        ),
+                        m("div.form-control", object.text),
+                        m("span.input-group-btn ",
+                            m("button.btn-no-marg", {
+                                onclick: function() {
+                                    List.removeFromList(index);
                                 }
-                            }
-                        }),
-                        m("div", object.text),
-
-                        m("button", {
-                            onclick: function() {
-                            	List.removeFromList(index);
-                            }
-                        }, "delete")
+                            }, m("span.glyphicon glyphicon-remove delete-btn[aria-hidden='true']")))
                     ])
                 ])
             })
@@ -38,3 +37,23 @@ module.exports = {
 
     }
 }
+
+
+   // m("div.checkboxFour",[
+   //                               m("input.checkbox[id='checkboxFourInput']", {
+   //                                  type: "checkbox",
+   //                                  onclick: function() {
+   //                                      var setComp = List.displayList("All");
+   //                                      for (var i = 0; i < setComp.length; i++) {
+                                            
+   //                                      List.list[setComp[i].id].toggleState()
+   //                                      if (List.list[setComp[i].id].checkboxState == false) {
+   //                                          List.list[setComp[i].id].tag = "Active"
+   //                                      } else {
+   //                                          List.list[setComp[i].id].tag = "Completed"
+   //                                      }
+   //                                      }
+   //                                  }
+   //                              }),
+   //                              m("label[for='checkboxFourInput']")
+   //                               ])
