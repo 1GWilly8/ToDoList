@@ -3,7 +3,6 @@ var m = require("mithril")
 var List = require("../model/List");
 
 module.exports = {
-    //keystrokes: "",
     view: function(vnode) {
         return m("div.container", [
             m("div.row", [
@@ -19,15 +18,20 @@ module.exports = {
                         m("div.jumbotron", [
                             m("input", {
                                 type: "checkbox",
+                                checked: List.allstatechecked,
                                 onclick: function() {
-                                    var setComp = List.displayList("All");
-                                    for (var i = 0; i < setComp.length; i++) {
-                                        //List.markCompleted(setComp[i].id);
-                                
-                                        List.list[setComp[i].id].toggleState()
-                                        if (List.list[setComp[i].id].checkboxState == false) {
-                                            List.list[setComp[i].id].tag = "Active"
-                                        } else {
+                                    var setComp = List.displayList("Active");
+                                    if (setComp.length == 0) {
+                                        List.allstatechecked = false;
+                                        var setAct = List.displayList("Completed");
+                                        for (var i = 0; i < setAct.length; i++) {
+                                            List.list[setAct[i].id].toggleState(),
+                                            List.list[setAct[i].id].tag = "Active"
+                                        }
+                                    } else {
+                                        List.allstatechecked = true;
+                                        for (var i = 0; i < setComp.length; i++) {
+                                            List.list[setComp[i].id].toggleState(),
                                             List.list[setComp[i].id].tag = "Completed"
                                         }
                                     }
@@ -39,6 +43,7 @@ module.exports = {
                                     if (e.keyCode == 13 && e.target.value != "") {
                                         List.addToList(e.target.value);
                                         e.target.value = '';
+                                        List.allstatechecked = false;
                                     }
                                 }
                             }),

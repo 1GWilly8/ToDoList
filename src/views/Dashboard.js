@@ -15,10 +15,12 @@ module.exports = {
                             onclick: function() {
                                 object.toggleState()
                                 if (List.list[object.id].checkboxState == false) {
+                                    List.allstatechecked = false,
                                     List.list[object.id].tag = "Active"
                                 } else {
                                     List.list[object.id].tag = "Completed"
                                 }
+                                List.checkAllComp();
                             }
                         }),
                         m("div.task", object.text),

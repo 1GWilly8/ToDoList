@@ -1261,7 +1261,7 @@ var Element = require("./ListElement")
 
 var ToDoList = {
     list: [],
-
+    allstatechecked: false,
     addToList: function(text) {
         element = new Element,
         element.add(this.list.length, "Active", text),
@@ -1291,6 +1291,17 @@ var ToDoList = {
         for (var i = id; i < this.list.length; i++) {
             this.list[i].id = this.list[i].id - 1
             
+        }
+    },
+
+    checkAllComp: function() {
+        var allItems = this.displayList("Active");
+        if (allItems.length == 0) {
+            console.log(this.allstatechecked)
+            this.allstatechecked = true
+        } else {
+            console.log(this.allstatechecked)
+            this.allstatechecked = false
         }
     }
 }
@@ -1337,10 +1348,12 @@ module.exports = {
                             onclick: function() {
                                 object.toggleState()
                                 if (List.list[object.id].checkboxState == false) {
+                                    List.allstatechecked = false,
                                     List.list[object.id].tag = "Active"
                                 } else {
                                     List.list[object.id].tag = "Completed"
                                 }
+                                List.checkAllComp();
                             }
                         }),
                         m("div.task", object.text),
@@ -1370,12 +1383,12 @@ module.exports = {
                             onclick: function() {
                                 object.toggleState()
                                 if (List.list[object.id].checkboxState == false) {
-                                    List.list[object.id].tag = "Active"
+                                    List.list[object.id].tag = "Active",
+                                    List.allstatechecked = false
                                 } else {
                                     List.list[object.id].tag = "Completed"
                                 }
-                                console.log("click frm comp",
-                                    List.list[object.id].checkboxState);
+                                List.checkAllComp();
                             }
                         }),
                         m("div.task", object.text),
@@ -1404,10 +1417,12 @@ module.exports = {
                             onclick: function() {
                                 object.toggleState()
                                 if (List.list[object.id].checkboxState == false) {
+                                    List.allstatechecked = false,
                                     List.list[object.id].tag = "Active"
                                 } else {
                                     List.list[object.id].tag = "Completed"
                                 }
+                                List.checkAllComp();
                             }
                         }),
                         m("div.task", object.text),
@@ -1424,7 +1439,6 @@ var m = require("mithril")
 var List = require("../model/List");
 
 module.exports = {
-    //keystrokes: "",
     view: function(vnode) {
         return m("div.container", [
             m("div.row", [
@@ -1440,15 +1454,20 @@ module.exports = {
                         m("div.jumbotron", [
                             m("input", {
                                 type: "checkbox",
+                                checked: List.allstatechecked,
                                 onclick: function() {
-                                    var setComp = List.displayList("All");
-                                    for (var i = 0; i < setComp.length; i++) {
-                                        //List.markCompleted(setComp[i].id);
-                                
-                                        List.list[setComp[i].id].toggleState()
-                                        if (List.list[setComp[i].id].checkboxState == false) {
-                                            List.list[setComp[i].id].tag = "Active"
-                                        } else {
+                                    var setComp = List.displayList("Active");
+                                    if (setComp.length == 0) {
+                                        List.allstatechecked = false;
+                                        var setAct = List.displayList("Completed");
+                                        for (var i = 0; i < setAct.length; i++) {
+                                            List.list[setAct[i].id].toggleState(),
+                                            List.list[setAct[i].id].tag = "Active"
+                                        }
+                                    } else {
+                                        List.allstatechecked = true;
+                                        for (var i = 0; i < setComp.length; i++) {
+                                            List.list[setComp[i].id].toggleState(),
                                             List.list[setComp[i].id].tag = "Completed"
                                         }
                                     }
@@ -1460,6 +1479,7 @@ module.exports = {
                                     if (e.keyCode == 13 && e.target.value != "") {
                                         List.addToList(e.target.value);
                                         e.target.value = '';
+                                        List.allstatechecked = false;
                                     }
                                 }
                             }),

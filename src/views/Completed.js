@@ -14,12 +14,12 @@ module.exports = {
                             onclick: function() {
                                 object.toggleState()
                                 if (List.list[object.id].checkboxState == false) {
-                                    List.list[object.id].tag = "Active"
+                                    List.list[object.id].tag = "Active",
+                                    List.allstatechecked = false
                                 } else {
                                     List.list[object.id].tag = "Completed"
                                 }
-                                console.log("click frm comp",
-                                    List.list[object.id].checkboxState);
+                                List.checkAllComp();
                             }
                         }),
                         m("div.task", object.text),

@@ -4,7 +4,7 @@ var Element = require("./ListElement")
 
 var ToDoList = {
     list: [],
-
+    allstatechecked: false,
     addToList: function(text) {
         element = new Element,
         element.add(this.list.length, "Active", text),
@@ -34,6 +34,17 @@ var ToDoList = {
         for (var i = id; i < this.list.length; i++) {
             this.list[i].id = this.list[i].id - 1
             
+        }
+    },
+
+    checkAllComp: function() {
+        var allItems = this.displayList("Active");
+        if (allItems.length == 0) {
+            console.log(this.allstatechecked)
+            this.allstatechecked = true
+        } else {
+            console.log(this.allstatechecked)
+            this.allstatechecked = false
         }
     }
 }
