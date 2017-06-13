@@ -1,4 +1,4 @@
-// src/views/Active.js
+// src/views/Completed.js
 var m = require("mithril")
 var List = require("../model/List");
 
@@ -12,14 +12,11 @@ module.exports = {
                         m("span.input-group-addon",
                             m("input", {
                                 type: "checkbox",
-                                checked: List.list[object.id].checkboxState,
+                                checked: object.checkboxState,
                                 onclick: function() {
                                     object.toggleState()
                                     if (List.list[object.id].checkboxState == false) {
-                                        List.allstatechecked = false,
-                                            List.list[object.id].tag = "Active"
-                                    } else {
-                                        List.list[object.id].tag = "Completed"
+                                        List.allstatechecked = false
                                     }
                                     List.checkAllComp();
                                 }

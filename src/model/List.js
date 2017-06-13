@@ -22,8 +22,7 @@ var ToDoList = {
         })
         .then(function(response) {
             ToDoList.list = response
-            console.log(ToDoList.list)
-            console.log(ToDoList.list)
+            
         })
     },
 
@@ -39,23 +38,23 @@ var ToDoList = {
         }
         var displayList = [];
         for (var i = 0; i < this.list.length; i++) {
-            if (this.list[i].checkboxState == TF) {
+            if (this.list[i].checkboxstate == TF) {
                 displayList.push(this.list[i])
             }
         }
         return displayList;
     },
 
-    toggleCompleted: function(id, checkboxstate) {   
+    toggleCompleted: function(id, checkbox) {   
         // this.list[id].tag = "Completed"
-       task = {checkboxstate: checkboxstate}
+       task = {checkboxstate: !checkbox}
         return m.request({
             method: "PUT",
             url: "http://localhost:8000/tasks/" + id,
             data: task
 
         }).then(function(response){
-            ToDoList.list.push(response)
+            ToDoList.loadList();
         })
     
     },
@@ -77,15 +76,19 @@ var ToDoList = {
         })
     },
 
-    toggleAllComp: function() {
-        var allItems = this.displayList("Active");
-        if (allItems.length == 0) {
-            console.log(this.allstatechecked)
-            this.allstatechecked = true
-        } else {
-            console.log(this.allstatechecked)
-            this.allstatechecked = false
+    toggleAllComp: function(TF) {
+        for (var i = 0; i < ToDoList.list.length; i++) {
+            ToDoList.toggleCompleted(ToDoList.list[i]._id, !TF)
+            console.log(ToDoList.list[i].checkboxstate)
         }
+        // var allItems = this.displayList("Active");
+        // if (allItems.length == 0) {
+        //     console.log(this.allstatechecked)
+        //     this.allstatechecked = true
+        // } else {
+        //     console.log(this.allstatechecked)
+        //     this.allstatechecked = false
+        // }
     }
 }
     
