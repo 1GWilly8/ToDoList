@@ -39,7 +39,10 @@ module.exports = function(app, db) {
     app.put('/tasks/:id', (req, res) => {
         const id = req.params.id;
         const details = { '_id': new ObjectID(id) };
-        const task = { text: req.body.body, title: req.body.title };
+        const task = {$set: {}};
+        for (key in req.body) {
+            task['$set'][key] = req.body[key]
+        }
         db.collection('tasks').update(details, task, (err, result) => {
             if (err) {
                 res.send({ 'error': 'An error has occurred' });
@@ -50,7 +53,8 @@ module.exports = function(app, db) {
     });
 
     app.post('/tasks', (req, res) => {
-        const task = { text: req.body.body, title: req.body.title };
+        const task = { text: req.body.text, checkboxstate: req.body.checkboxstate };
+        console.log(task);
         db.collection('tasks').insert(task, (err, result) => {
             if (err) {
                 res.send({ 'error': 'An error has occurred' });

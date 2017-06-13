@@ -1257,18 +1257,22 @@ m.route(document.body, "/All", {
 })
 
 
-},{"./views/Active":5,"./views/Completed":6,"./views/Dashboard":7,"./views/Layout":8,"mithril":1}],3:[function(require,module,exports){
+},{"./views/Active":4,"./views/Completed":5,"./views/Dashboard":6,"./views/Layout":7,"mithril":1}],3:[function(require,module,exports){
 // src/model/List
 var m = require("mithril")
-var Element = require("./ListElement")
 
 var ToDoList = {
     list: [],
     allstatechecked: false,
-    addToList: function(text) {
-        element = new Element,
-        element.add(this.list.length, "Active", text),
-        this.list[this.list.length] = element
+    addToList: function(text, checkboxstate) {
+        var task = {text: text, checkboxstate: checkboxstate};
+        console.log(task);
+        return m.request({
+            method: "POST",
+            url: "http://localhost:8000/tasks",
+            data: task
+        })
+        this.loadList();
     },
 
     loadList: function() {
@@ -1284,33 +1288,56 @@ var ToDoList = {
     },
 
     displayList: function(state) {
+        var TF;
         if (state == "All") {
             return this.list
         }
-
+        if (state == "Completed") {
+            TF = true
+        } else if (state == "Active") {
+            TF = false
+        }
         var displayList = [];
         for (var i = 0; i < this.list.length; i++) {
-            if (this.list[i].tag == state) {
+            if (this.list[i].checkboxState == TF) {
                 displayList.push(this.list[i])
             }
         }
         return displayList;
     },
 
-    markCompleted: function(id) {   
-        this.list[id].tag = "Completed"
+    toggleCompleted: function(id, checkboxstate) {   
+        // this.list[id].tag = "Completed"
+       task = {checkboxstate: checkboxstate}
+        return m.request({
+            method: "PUT",
+            url: "http://localhost:8000/tasks/" + id,
+            data: task
+
+        }).then(function(response){
+            ToDoList.list.push(response)
+        })
+    
     },
+
+
 
     removeFromList: function(id) {
-        this.list.splice(id, 1);
-        for (var i = id; i < this.list.length; i++) {
-            this.list[i].id = this.list[i].id - 1
+        // this.list.splice(id, 1);
+        // for (var i = id; i < this.list.length; i++) {
+        //     this.list[i].id = this.list[i].id - 1
             
-        }
-        this.checkAllComp();
+        // }
+        // this.checkAllComp();
+         return m.request({
+            method: "DELETE",
+            url: "http://localhost:8000/tasks/" + id
+        }).then(function(response){
+            ToDoList.list.push(response)
+        })
     },
 
-    checkAllComp: function() {
+    toggleAllComp: function() {
         var allItems = this.displayList("Active");
         if (allItems.length == 0) {
             console.log(this.allstatechecked)
@@ -1323,31 +1350,7 @@ var ToDoList = {
 }
     
     module.exports = ToDoList;
-},{"./ListElement":4,"mithril":1}],4:[function(require,module,exports){
-// src/model/ListElement
-var m = require("mithril")
-
-module.exports = function() {
-	var Element = {
-		id: -1,
-		tag: "",
-		text: "",
-		checkboxState: false,
-
-		add: function(tmpId, tmpTag, tmpText) {
-			this.id = tmpId,
-			this.tag = tmpTag,
-			this.text = tmpText
-		},
-
-		toggleState: function() {
-			this.checkboxState = !this.checkboxState
-		}
-	}
-
-	return Element;
-}
-},{"mithril":1}],5:[function(require,module,exports){
+},{"mithril":1}],4:[function(require,module,exports){
 // src/views/Active.js
 var m = require("mithril")
 var List = require("../model/List");
@@ -1391,7 +1394,7 @@ module.exports = {
     }
 }
 
-},{"../model/List":3,"mithril":1}],6:[function(require,module,exports){
+},{"../model/List":3,"mithril":1}],5:[function(require,module,exports){
 // src/views/Active.js
 var m = require("mithril")
 var List = require("../model/List");
@@ -1434,7 +1437,7 @@ module.exports = {
     }
 }
 
-},{"../model/List":3,"mithril":1}],7:[function(require,module,exports){
+},{"../model/List":3,"mithril":1}],6:[function(require,module,exports){
 // src/views/Active.js
 var m = require("mithril")
 var List = require("../model/List");
@@ -1497,14 +1500,16 @@ module.exports = {
    //                              m("label[for='checkboxFourInput']")
    //                               ])
 
-},{"../model/List":3,"mithril":1}],8:[function(require,module,exports){
+},{"../model/List":3,"mithril":1}],7:[function(require,module,exports){
 // src/views/Layout.js
 var m = require("mithril")
 var List = require("../model/List");
 
 module.exports = {
     oninit: function() {
-        //List.loadList() /*.then(function(){List.list = list});*/
+        List.loadList();
+        // List.addToList("run", false); 
+        // List.toggleCompleted("5940431eb092ab176aa43181", false);/*.then(function(){List.list = list});*/
     },
     view: function(vnode) {
         // return
@@ -1549,9 +1554,9 @@ module.exports = {
                                 placeholder: "What needs to be done?",
                                 onkeydown: function(e) {
                                     if (e.keyCode == 13 && e.target.value != "") {
-                                        List.addToList(e.target.value);
+                                        List.addToList(e.target.value, false); 
                                         e.target.value = '';
-                                        List.allstatechecked = false;
+                                        
                                     }
                                 }
                             })

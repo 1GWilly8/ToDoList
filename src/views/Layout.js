@@ -4,7 +4,9 @@ var List = require("../model/List");
 
 module.exports = {
     oninit: function() {
-        //List.loadList() /*.then(function(){List.list = list});*/
+        List.loadList();
+        // List.addToList("run", false); 
+        // List.toggleCompleted("5940431eb092ab176aa43181", false);/*.then(function(){List.list = list});*/
     },
     view: function(vnode) {
         // return
@@ -49,9 +51,9 @@ module.exports = {
                                 placeholder: "What needs to be done?",
                                 onkeydown: function(e) {
                                     if (e.keyCode == 13 && e.target.value != "") {
-                                        List.addToList(e.target.value);
+                                        List.addToList(e.target.value, false); 
                                         e.target.value = '';
-                                        List.allstatechecked = false;
+                                        
                                     }
                                 }
                             })
