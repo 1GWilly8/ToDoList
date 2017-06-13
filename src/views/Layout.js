@@ -3,8 +3,11 @@ var m = require("mithril")
 var List = require("../model/List");
 
 module.exports = {
-    //keystrokes: "",
+    oninit: function() {
+        //List.loadList() /*.then(function(){List.list = list});*/
+    },
     view: function(vnode) {
+        // return
         return m("div.container", [
             m("div.row", [
                 m("div.col-md-4"),

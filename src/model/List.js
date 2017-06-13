@@ -11,6 +11,18 @@ var ToDoList = {
         this.list[this.list.length] = element
     },
 
+    loadList: function() {
+        return m.request({
+            method: "GET",
+            url: "http://localhost:8000/tasks",
+        })
+        .then(function(response) {
+            ToDoList.list = response
+            console.log(ToDoList.list)
+            console.log(ToDoList.list)
+        })
+    },
+
     displayList: function(state) {
         if (state == "All") {
             return this.list

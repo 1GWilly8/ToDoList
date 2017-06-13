@@ -1237,6 +1237,7 @@ var Layout = require("./views/Layout")
 var Completed = require("./views/Completed")
 
 
+
 m.route(document.body, "/All", {
     "/All": {
     	render: function() {
@@ -1254,6 +1255,8 @@ m.route(document.body, "/All", {
         }
     }
 })
+
+
 },{"./views/Active":5,"./views/Completed":6,"./views/Dashboard":7,"./views/Layout":8,"mithril":1}],3:[function(require,module,exports){
 // src/model/List
 var m = require("mithril")
@@ -1266,6 +1269,18 @@ var ToDoList = {
         element = new Element,
         element.add(this.list.length, "Active", text),
         this.list[this.list.length] = element
+    },
+
+    loadList: function() {
+        return m.request({
+            method: "GET",
+            url: "http://localhost:8000/tasks",
+        })
+        .then(function(response) {
+            ToDoList.list = response
+            console.log(ToDoList.list)
+            console.log(ToDoList.list)
+        })
     },
 
     displayList: function(state) {
@@ -1488,8 +1503,11 @@ var m = require("mithril")
 var List = require("../model/List");
 
 module.exports = {
-    //keystrokes: "",
+    oninit: function() {
+        //List.loadList() /*.then(function(){List.list = list});*/
+    },
     view: function(vnode) {
+        // return
         return m("div.container", [
             m("div.row", [
                 m("div.col-md-4"),
