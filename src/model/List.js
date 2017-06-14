@@ -93,6 +93,7 @@ var ToDoList = {
             ToDoList.toggleCompleted(ToDoList.list[i]._id, !TF),
             console.log(ToDoList.list[i].checkboxstate)
         }
+        
         // var allItems = this.displayList("Active");
         // if (allItems.length == 0) {
         //     console.log(this.allstatechecked)

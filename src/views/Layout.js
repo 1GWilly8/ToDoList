@@ -31,6 +31,7 @@ module.exports = {
                                             var setComp = List.displayList("Active");
                                             if (setComp.length == 0) {
                                                 List.toggleAllComp(false);
+                                                List.allstatechecked = false;
                                                 // List.allstatechecked = false;
                                                 // var setAct = List.displayList("Completed");
                                                 // for (var i = 0; i < setAct.length; i++) {
@@ -38,6 +39,7 @@ module.exports = {
                                                 // }
                                             } else {
                                                 List.toggleAllComp(true);
+                                                List.allstatechecked = true;
                                                 // List.allstatechecked = true;
                                                 // for (var i = 0; i < setComp.length; i++) {
                                                 //     List.toggleCompleted(setComp[i]._id, 
@@ -53,7 +55,7 @@ module.exports = {
                                 placeholder: "What needs to be done?",
                                 onkeydown: function(e) {
                                     if (e.keyCode == 13 && e.target.value != "") {
-                                        List.addToList(e.target.value, false); 
+                                        List.addToList(e.target.value, false);
                                         e.target.value = '';
                                         List.loadList();
                                         m.redraw();
