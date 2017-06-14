@@ -107,7 +107,8 @@ var ToDoList = {
 
     toggleAllComp: function(TF) {
         for (var i = 0; i < ToDoList.list.length; i++) {
-            ToDoList.toggleCompleted(ToDoList.list[i]._id, !TF)
+            console.log(i),
+            ToDoList.toggleCompleted(ToDoList.list[i]._id, !TF),
             console.log(ToDoList.list[i].checkboxstate)
         }
         // var allItems = this.displayList("Active");
