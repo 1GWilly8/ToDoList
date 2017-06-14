@@ -1,9 +1,14 @@
 // server.js
+
+var path = require('path');
 const express        = require('express');
 const MongoClient    = require('mongodb').MongoClient;
 const bodyParser     = require('body-parser');
 const db             = require('./config/db');
 const app            = express();
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/')));
+app.get(express.static(path.join(__dirname, '/')));
 const port = 8000;
 
 // Add headers

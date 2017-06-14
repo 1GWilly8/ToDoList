@@ -1283,12 +1283,12 @@ var ToDoList = {
         })
         .then(function(response) {
             ToDoList.list = response
-            console.log(ToDoList.list)
-            console.log(ToDoList.list)
+            
         })
     },
 
     displayList: function(state) {
+<<<<<<< HEAD
         // var TF;
         // if (state == "All") {
         //     return this.list
@@ -1314,18 +1314,36 @@ var ToDoList = {
             console.log(ToDoList.list)
             console.log(ToDoList.list)
         })
+=======
+        var TF;
+        if (state == "All") {
+            return this.list
+        }
+        if (state == "Completed") {
+            TF = true
+        } else if (state == "Active") {
+            TF = false
+        }
+        var displayList = [];
+        for (var i = 0; i < this.list.length; i++) {
+            if (this.list[i].checkboxstate == TF) {
+                displayList.push(this.list[i])
+            }
+        }
+        return displayList;
+>>>>>>> 5c0c4d901b107c614946e5a795275b89e972f716
     },
 
-    toggleCompleted: function(id, checkboxstate) {   
+    toggleCompleted: function(id, checkbox) {   
         // this.list[id].tag = "Completed"
-       task = {checkboxstate: checkboxstate}
+       task = {checkboxstate: !checkbox}
         return m.request({
             method: "PUT",
             url: "http://localhost:8000/tasks/" + id,
             data: task
 
         }).then(function(response){
-            ToDoList.list.push(response)
+            ToDoList.loadList();
         })
     
     },
@@ -1347,15 +1365,19 @@ var ToDoList = {
         })
     },
 
-    toggleAllComp: function() {
-        var allItems = this.displayList("Active");
-        if (allItems.length == 0) {
-            console.log(this.allstatechecked)
-            this.allstatechecked = true
-        } else {
-            console.log(this.allstatechecked)
-            this.allstatechecked = false
+    toggleAllComp: function(TF) {
+        for (var i = 0; i < ToDoList.list.length; i++) {
+            ToDoList.toggleCompleted(ToDoList.list[i]._id, !TF)
+            console.log(ToDoList.list[i].checkboxstate)
         }
+        // var allItems = this.displayList("Active");
+        // if (allItems.length == 0) {
+        //     console.log(this.allstatechecked)
+        //     this.allstatechecked = true
+        // } else {
+        //     console.log(this.allstatechecked)
+        //     this.allstatechecked = false
+        // }
     }
 }
     
@@ -1378,11 +1400,8 @@ module.exports = {
                             checked: false,
                             onclick: function() {
                                 object.toggleState()
-                                if (List.list[object.id].checkboxState == false) {
-                                    List.allstatechecked = false,
-                                    List.list[object.id].tag = "Active"
-                                } else {
-                                    List.list[object.id].tag = "Completed"
+                                if (object.checkboxstate == false) {
+                                    List.allstatechecked = false
                                 }
                                 List.checkAllComp();
                             }
@@ -1405,7 +1424,7 @@ module.exports = {
 }
 
 },{"../model/List":3,"mithril":1}],5:[function(require,module,exports){
-// src/views/Active.js
+// src/views/Completed.js
 var m = require("mithril")
 var List = require("../model/List");
 
@@ -1419,14 +1438,11 @@ module.exports = {
                         m("span.input-group-addon",
                             m("input", {
                                 type: "checkbox",
-                                checked: List.list[object.id].checkboxState,
+                                checked: object.checkboxState,
                                 onclick: function() {
                                     object.toggleState()
                                     if (List.list[object.id].checkboxState == false) {
-                                        List.allstatechecked = false,
-                                            List.list[object.id].tag = "Active"
-                                    } else {
-                                        List.list[object.id].tag = "Completed"
+                                        List.allstatechecked = false
                                     }
                                     List.checkAllComp();
                                 }
@@ -1448,12 +1464,15 @@ module.exports = {
 }
 
 },{"../model/List":3,"mithril":1}],6:[function(require,module,exports){
-// src/views/Active.js
+// src/views/Dashboard.js
 var m = require("mithril")
 var List = require("../model/List");
 
 
 module.exports = {
+    oninit: function() {
+      List.loadList();
+    },
     view: function() {
         var todos = List.displayList(false);
         return todos.map(function(object) {
@@ -1461,6 +1480,7 @@ module.exports = {
                     m("div.input-group", [
                         m("span.input-group-addon",
                             m("input", {
+<<<<<<< HEAD
                                 type: "checkbox",
                                 checked: object.checkboxstate,
                                 onclick: function() {
@@ -1472,6 +1492,20 @@ module.exports = {
                                     }
                                 }
                             })
+=======
+                            type: "checkbox",
+                            checked: object.checkboxState,
+                            onclick: function() {
+                              console.log("FFFF"),
+                                List.toggleCompleted(object._id, object.checkboxstate)
+                                if (object.checkboxState == false) {
+                                    List.allstatechecked = false
+                                }
+                                List.toggleAllComp();
+                                List.loadList();
+                            }
+                        })
+>>>>>>> 5c0c4d901b107c614946e5a795275b89e972f716
                         ),
                         m("div.form-control", object.text),
                         m("span.input-group-btn ",
@@ -1541,19 +1575,21 @@ module.exports = {
                                         onclick: function() {
                                             var setComp = List.displayList("Active");
                                             if (setComp.length == 0) {
-                                                List.allstatechecked = false;
-                                                var setAct = List.displayList("Completed");
-                                                for (var i = 0; i < setAct.length; i++) {
-                                                    List.list[setAct[i].id].toggleState(),
-                                                        List.list[setAct[i].id].tag = "Active"
-                                                }
+                                                List.toggleAllComp(false);
+                                                // List.allstatechecked = false;
+                                                // var setAct = List.displayList("Completed");
+                                                // for (var i = 0; i < setAct.length; i++) {
+                                                //     List.list[setAct[i].id].toggleState()
+                                                // }
                                             } else {
-                                                List.allstatechecked = true;
-                                                for (var i = 0; i < setComp.length; i++) {
-                                                    List.list[setComp[i].id].toggleState(),
-                                                        List.list[setComp[i].id].tag = "Completed"
-                                                }
+                                                List.toggleAllComp(true);
+                                                // List.allstatechecked = true;
+                                                // for (var i = 0; i < setComp.length; i++) {
+                                                //     List.toggleCompleted(setComp[i]._id, 
+                                                //         setComp[i].checkboxstate)
+                                                // }
                                             }
+                                            List.loadList
                                         }
                                     }),
                                 ] : "", ),

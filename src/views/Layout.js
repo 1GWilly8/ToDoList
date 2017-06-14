@@ -30,19 +30,21 @@ module.exports = {
                                         onclick: function() {
                                             var setComp = List.displayList("Active");
                                             if (setComp.length == 0) {
-                                                List.allstatechecked = false;
-                                                var setAct = List.displayList("Completed");
-                                                for (var i = 0; i < setAct.length; i++) {
-                                                    List.list[setAct[i].id].toggleState(),
-                                                        List.list[setAct[i].id].tag = "Active"
-                                                }
+                                                List.toggleAllComp(false);
+                                                // List.allstatechecked = false;
+                                                // var setAct = List.displayList("Completed");
+                                                // for (var i = 0; i < setAct.length; i++) {
+                                                //     List.list[setAct[i].id].toggleState()
+                                                // }
                                             } else {
-                                                List.allstatechecked = true;
-                                                for (var i = 0; i < setComp.length; i++) {
-                                                    List.list[setComp[i].id].toggleState(),
-                                                        List.list[setComp[i].id].tag = "Completed"
-                                                }
+                                                List.toggleAllComp(true);
+                                                // List.allstatechecked = true;
+                                                // for (var i = 0; i < setComp.length; i++) {
+                                                //     List.toggleCompleted(setComp[i]._id, 
+                                                //         setComp[i].checkboxstate)
+                                                // }
                                             }
+                                            List.loadList
                                         }
                                     }),
                                 ] : "", ),

@@ -1,9 +1,12 @@
-// src/views/Active.js
+// src/views/Dashboard.js
 var m = require("mithril")
 var List = require("../model/List");
 
 
 module.exports = {
+    oninit: function() {
+      List.loadList();
+    },
     view: function() {
         var todos = List.displayList(false);
         return todos.map(function(object) {
@@ -11,6 +14,7 @@ module.exports = {
                     m("div.input-group", [
                         m("span.input-group-addon",
                             m("input", {
+<<<<<<< HEAD
                                 type: "checkbox",
                                 checked: object.checkboxstate,
                                 onclick: function() {
@@ -22,6 +26,20 @@ module.exports = {
                                     }
                                 }
                             })
+=======
+                            type: "checkbox",
+                            checked: object.checkboxState,
+                            onclick: function() {
+                              console.log("FFFF"),
+                                List.toggleCompleted(object._id, object.checkboxstate)
+                                if (object.checkboxState == false) {
+                                    List.allstatechecked = false
+                                }
+                                List.toggleAllComp();
+                                List.loadList();
+                            }
+                        })
+>>>>>>> 5c0c4d901b107c614946e5a795275b89e972f716
                         ),
                         m("div.form-control", object.text),
                         m("span.input-group-btn ",
