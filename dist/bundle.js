@@ -1473,10 +1473,13 @@ module.exports = {
                               console.log(object.checkboxstate),
                               console.log(object._id),
                               List.toggleCompleted(object._id, object.checkboxstate)
-                                if (object.checkboxState == false) {
-                                    List.allstatechecked = false
-                                }
                                 List.loadList();
+                                var actList = List.displayList("Active");
+                                if (actList.length == 0) {
+                                  List.allstatechecked = true
+                                } else {
+                                  List.allstatechecked = false
+                                }
                             }
                         })
                         ),
