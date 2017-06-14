@@ -43,7 +43,7 @@ module.exports = function(app, db) {
             if (err) {
                 res.send({ 'error': 'An error has occurred' });
             } else {
-                res.send("task " + id + " delete!");
+                res.send({"sucess": "task " + id + " delete!"});
             }
         });
     });
