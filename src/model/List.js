@@ -23,7 +23,14 @@ var ToDoList = {
         })
         .then(function(response) {
             ToDoList.list = response
-            
+            var actList = ToDoList.displayList("Active");
+            console.log("---", ToDoList.allstatechecked);
+              if (actList.length == 0) {
+                ToDoList.allstatechecked = true
+              } else {]
+                ToDoList.allstatechecked = false
+              }
+              m.redraw();
         })
     },
 
@@ -90,6 +97,7 @@ var ToDoList = {
             ToDoList.toggleCompleted(ToDoList.list[i]._id, !TF),
             console.log(ToDoList.list[i].checkboxstate)
         }
+        
         // var allItems = this.displayList("Active");
         // if (allItems.length == 0) {
         //     console.log(this.allstatechecked)

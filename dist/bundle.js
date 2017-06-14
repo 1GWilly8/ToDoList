@@ -1283,7 +1283,16 @@ var ToDoList = {
         })
         .then(function(response) {
             ToDoList.list = response
-            
+            var actList = ToDoList.displayList("Active");
+            console.log("---", ToDoList.allstatechecked);
+              if (actList.length == 0) {
+                console.log("t"),
+                ToDoList.allstatechecked = true
+              } else {
+                console.log("f"),
+                ToDoList.allstatechecked = false
+              }
+              m.redraw();
         })
     },
 
@@ -1350,6 +1359,7 @@ var ToDoList = {
             ToDoList.toggleCompleted(ToDoList.list[i]._id, !TF),
             console.log(ToDoList.list[i].checkboxstate)
         }
+        
         // var allItems = this.displayList("Active");
         // if (allItems.length == 0) {
         //     console.log(this.allstatechecked)
@@ -1469,9 +1479,6 @@ module.exports = {
                             type: "checkbox",
                             checked: object.checkboxstate,
                             onclick: function() {
-                              console.log("FFFF"),
-                              console.log(object.checkboxstate),
-                              console.log(object._id),
                               List.toggleCompleted(object._id, object.checkboxstate)
                                 List.loadList();
                                 var actList = List.displayList("Active");
@@ -1480,6 +1487,7 @@ module.exports = {
                                 } else {
                                   List.allstatechecked = false
                                 }
+                                List.loadList();
                             }
                         })
                         ),
@@ -1526,6 +1534,15 @@ var List = require("../model/List");
 module.exports = {
     oninit: function() {
         List.loadList();
+        var actList = List.displayList("Active");
+        console.log("---", List.allstatechecked);
+          if (actList.length == 0) {
+            console.log("t"),
+            List.allstatechecked = true
+          } else {
+            console.log("f"),
+            List.allstatechecked = false
+          }
         // List.addToList("run", false); 
         // List.toggleCompleted("5940431eb092ab176aa43181", false);/*.then(function(){List.list = list});*/
     },
@@ -1552,6 +1569,7 @@ module.exports = {
                                             var setComp = List.displayList("Active");
                                             if (setComp.length == 0) {
                                                 List.toggleAllComp(false);
+                                                List.allstatechecked = false;
                                                 // List.allstatechecked = false;
                                                 // var setAct = List.displayList("Completed");
                                                 // for (var i = 0; i < setAct.length; i++) {
@@ -1559,6 +1577,7 @@ module.exports = {
                                                 // }
                                             } else {
                                                 List.toggleAllComp(true);
+                                                List.allstatechecked = true;
                                                 // List.allstatechecked = true;
                                                 // for (var i = 0; i < setComp.length; i++) {
                                                 //     List.toggleCompleted(setComp[i]._id, 
@@ -1574,7 +1593,7 @@ module.exports = {
                                 placeholder: "What needs to be done?",
                                 onkeydown: function(e) {
                                     if (e.keyCode == 13 && e.target.value != "") {
-                                        List.addToList(e.target.value, false); 
+                                        List.addToList(e.target.value, false);
                                         e.target.value = '';
                                         List.loadList();
                                         m.redraw();
