@@ -18,9 +18,7 @@ module.exports = {
                             checked: object.checkboxstate,
                             onclick: function() {
                               List.toggleCompleted(object._id, object.checkboxstate)
-                                
                                 List.loadList();
-                                
                             }
                         })
                         ),

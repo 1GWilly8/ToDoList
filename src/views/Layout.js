@@ -5,6 +5,15 @@ var List = require("../model/List");
 module.exports = {
     oninit: function() {
         List.loadList();
+        var actList = List.displayList("Active");
+        console.log("---", List.allstatechecked);
+          if (actList.length == 0) {
+            console.log("t"),
+            List.allstatechecked = true
+          } else {
+            console.log("f"),
+            List.allstatechecked = false
+          }
         // List.addToList("run", false); 
         // List.toggleCompleted("5940431eb092ab176aa43181", false);/*.then(function(){List.list = list});*/
     },
