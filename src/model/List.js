@@ -2,6 +2,7 @@
 var m = require("mithril")
 
 var ToDoList = {
+    displayList: [],
     list: [],
     allstatechecked: false,
     addToList: function(text, checkboxstate) {
@@ -28,22 +29,31 @@ var ToDoList = {
     },
 
     displayList: function(state) {
-        var TF;
-        if (state == "All") {
-            return this.list
-        }
-        if (state == "Completed") {
-            TF = true
-        } else if (state == "Active") {
-            TF = false
-        }
-        var displayList = [];
-        for (var i = 0; i < this.list.length; i++) {
-            if (this.list[i].checkboxState == TF) {
-                displayList.push(this.list[i])
-            }
-        }
-        return displayList;
+        // var TF;
+        // if (state == "All") {
+        //     return this.list
+        // }
+        // if (state == "Completed") {
+        //     TF = true
+        // } else if (state == "Active") {
+        //     TF = false
+        // }
+        
+        // for (var i = 0; i < this.list.length; i++) {
+        //     if (this.list[i].checkboxState == TF) {
+        //         displayList.push(this.list[i])
+        //     }
+        // }
+        // return displayList;
+         return m.request({
+            method: "GET",
+            url: "http://localhost:8000/tasks/"+state,
+        })
+        .then(function(response) {
+            ToDoList.displayList = response
+            console.log(ToDoList.list)
+            console.log(ToDoList.list)
+        })
     },
 
     toggleCompleted: function(id, checkboxstate) {   

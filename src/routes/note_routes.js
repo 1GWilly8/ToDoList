@@ -14,6 +14,18 @@ module.exports = function(app, db) {
         });
     });
 
+    app.get('/tasks/:checkboxstate', (req, res) => {
+        const checkboxstate = req.params.checkboxstate;
+        const details = { 'checkboxstate': checkboxstate };
+        db.collection('tasks').find(details, (err, item) => {
+            if (err) {
+                res.send({ 'error': 'An error has occurred' });
+            } else {
+                res.send(item);
+            }
+        });
+    });
+
     app.get('/tasks', (req, res) => {
         db.collection('tasks').find({}).toArray((err, documents) => {
             if (err) {
