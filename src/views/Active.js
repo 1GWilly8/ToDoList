@@ -14,11 +14,14 @@ module.exports = {
                             type: "checkbox",
                             checked: false,
                             onclick: function() {
-                                object.toggleState()
-                                if (object.checkboxstate == false) {
+                              console.log("FFFF"),
+                              console.log(object.checkboxstate),
+                              console.log(object._id),
+                              List.toggleCompleted(object._id, object.checkboxstate)
+                                if (object.checkboxState == false) {
                                     List.allstatechecked = false
                                 }
-                                List.checkAllComp();
+                                List.loadList();
                             }
 
                         })
