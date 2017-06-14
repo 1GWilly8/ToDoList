@@ -13,7 +13,10 @@ var ToDoList = {
             url: "http://localhost:8000/tasks",
             data: task
         })
-        this.loadList();
+        .then(function(response){
+            ToDoList.list.push(response)
+        })
+        
     },
 
     loadList: function() {
