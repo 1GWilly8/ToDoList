@@ -75,7 +75,12 @@ var ToDoList = {
             method: "DELETE",
             url: "http://localhost:8000/tasks/" + id
         }).then(function(response){
-            ToDoList.list.push(response)
+            ToDoList.list.forEach(function(listItem, index){
+                if(listItem._id == id){
+                    ToDoList.list.splice(index, 1);
+                }
+            })
+            m.redraw();
         })
     },
 
