@@ -32,27 +32,5 @@ module.exports = {
                     ])
                 ])
             })
-            // ]
-
     }
 }
-
-
-   // m("div.checkboxFour",[
-   //                               m("input.checkbox[id='checkboxFourInput']", {
-   //                                  type: "checkbox",
-   //                                  onclick: function() {
-   //                                      var setComp = List.displayList("All");
-   //                                      for (var i = 0; i < setComp.length; i++) {
-                                            
-   //                                      List.list[setComp[i].id].toggleState()
-   //                                      if (List.list[setComp[i].id].checkboxState == false) {
-   //                                          List.list[setComp[i].id].tag = "Active"
-   //                                      } else {
-   //                                          List.list[setComp[i].id].tag = "Completed"
-   //                                      }
-   //                                      }
-   //                                  }
-   //                              }),
-   //                              m("label[for='checkboxFourInput']")
-   //                               ])

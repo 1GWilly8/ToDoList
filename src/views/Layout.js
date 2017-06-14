@@ -14,11 +14,8 @@ module.exports = {
             console.log("f"),
             List.allstatechecked = false
           }
-        // List.addToList("run", false); 
-        // List.toggleCompleted("5940431eb092ab176aa43181", false);/*.then(function(){List.list = list});*/
     },
     view: function(vnode) {
-        // return
         return m("div.container", [
             m("div.row", [
                 m("div.col-md-4"),
