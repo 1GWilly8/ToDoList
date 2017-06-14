@@ -1273,6 +1273,10 @@ var ToDoList = {
             url: "http://localhost:8000/tasks",
             data: task
         })
+        .then(function(response) {
+            ToDoList.list.push(response);
+            ToDoList.loadList();
+        })
         
     },
 
@@ -1284,12 +1288,10 @@ var ToDoList = {
         .then(function(response) {
             ToDoList.list = response
             var actList = ToDoList.displayList("Active");
-            console.log("---", ToDoList.allstatechecked);
+            console.log("---", ToDoList.allstatechecked)
               if (actList.length == 0) {
-                console.log("t"),
                 ToDoList.allstatechecked = true
               } else {
-                console.log("f"),
                 ToDoList.allstatechecked = false
               }
               m.redraw();
@@ -1393,9 +1395,6 @@ module.exports = {
                               console.log(object.checkboxstate),
                               console.log(object._id),
                               List.toggleCompleted(object._id, object.checkboxstate)
-                                if (object.checkboxState == false) {
-                                    List.allstatechecked = false
-                                }
                                 List.loadList();
                             }
 
@@ -1437,9 +1436,6 @@ module.exports = {
                                   console.log(object.checkboxstate),
                                   console.log(object._id),
                                   List.toggleCompleted(object._id, object.checkboxstate)
-                                    if (object.checkboxState == false) {
-                                        List.allstatechecked = false
-                                    }
                                     List.loadList();
                                 }
                             })
@@ -1480,13 +1476,6 @@ module.exports = {
                             checked: object.checkboxstate,
                             onclick: function() {
                               List.toggleCompleted(object._id, object.checkboxstate)
-                                List.loadList();
-                                var actList = List.displayList("Active");
-                                if (actList.length == 0) {
-                                  List.allstatechecked = true
-                                } else {
-                                  List.allstatechecked = false
-                                }
                                 List.loadList();
                             }
                         })

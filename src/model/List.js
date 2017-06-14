@@ -13,6 +13,10 @@ var ToDoList = {
             url: "http://localhost:8000/tasks",
             data: task
         })
+        .then(function(response) {
+            ToDoList.list.push(response);
+            ToDoList.loadList();
+        })
         
     },
 
@@ -24,10 +28,10 @@ var ToDoList = {
         .then(function(response) {
             ToDoList.list = response
             var actList = ToDoList.displayList("Active");
-            console.log("---", ToDoList.allstatechecked);
+            console.log("---", ToDoList.allstatechecked)
               if (actList.length == 0) {
                 ToDoList.allstatechecked = true
-              } else {]
+              } else {
                 ToDoList.allstatechecked = false
               }
               m.redraw();
