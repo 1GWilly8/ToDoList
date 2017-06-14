@@ -1374,11 +1374,14 @@ module.exports = {
                             type: "checkbox",
                             checked: false,
                             onclick: function() {
-                                object.toggleState()
-                                if (object.checkboxstate == false) {
+                              console.log("FFFF"),
+                              console.log(object.checkboxstate),
+                              console.log(object._id),
+                              List.toggleCompleted(object._id, object.checkboxstate)
+                                if (object.checkboxState == false) {
                                     List.allstatechecked = false
                                 }
-                                List.checkAllComp();
+                                List.loadList();
                             }
 
                         })
@@ -1413,13 +1416,16 @@ module.exports = {
                         m("span.input-group-addon",
                             m("input", {
                                 type: "checkbox",
-                                checked: object.checkboxState,
+                                checked: true,
                                 onclick: function() {
-                                    object.toggleState()
-                                    if (List.list[object.id].checkboxState == false) {
+                                  console.log("FFFF"),
+                                  console.log(object.checkboxstate),
+                                  console.log(object._id),
+                                  List.toggleCompleted(object._id, object.checkboxstate)
+                                    if (object.checkboxState == false) {
                                         List.allstatechecked = false
                                     }
-                                    List.checkAllComp();
+                                    List.loadList();
                                 }
                             })
                         ),
