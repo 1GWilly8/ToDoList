@@ -1338,7 +1338,8 @@ var ToDoList = {
 
     toggleAllComp: function(TF) {
         for (var i = 0; i < ToDoList.list.length; i++) {
-            ToDoList.toggleCompleted(ToDoList.list[i]._id, !TF)
+            console.log(i),
+            ToDoList.toggleCompleted(ToDoList.list[i]._id, !TF),
             console.log(ToDoList.list[i].checkboxstate)
         }
         // var allItems = this.displayList("Active");
@@ -1546,7 +1547,7 @@ module.exports = {
                                                 //         setComp[i].checkboxstate)
                                                 // }
                                             }
-                                            List.loadList
+                                            List.loadList();
                                         }
                                     }),
                                 ] : "", ),
@@ -1557,7 +1558,8 @@ module.exports = {
                                     if (e.keyCode == 13 && e.target.value != "") {
                                         List.addToList(e.target.value, false); 
                                         e.target.value = '';
-                                        
+                                        List.loadList();
+                                        m.redraw();
                                     }
                                 }
                             })
@@ -1575,8 +1577,9 @@ module.exports = {
                             onclick: function() {
                                 var complete = List.displayList("Completed");
                                 for (var i = 0; i < complete.length; i++) {
-                                    List.removeFromList(complete[i].id);
+                                    List.removeFromList(complete[i]._id);
                                 }
+                                m.redraw();
                             }
                         }, "Clear Completed")
                     ])
@@ -1598,46 +1601,5 @@ module.exports = {
 
     }
 }
-
-// m("main", [
-// m("header", "todos"),
-// m("div.jumbotron", [
-//     m("input", {type: "checkbox", 
-//         onclick: function(){
-//         var setComp = List.displayList("All");
-//                 for (var i = 0; i < setComp.length; i++) {
-//                     List.markCompleted(setComp[i].id);
-//                 }
-//     } }),            
-//         m("input", {
-//             placeholder: "What needs to be done?",
-//             onkeydown: function(e) {
-//                 if (e.keyCode == 13 && e.target.value != "") {
-//                     List.addToList(e.target.value);
-//                     e.target.value = '';
-//                     console.log("List.list is now equal to: ", List.list)
-//                 }
-//             }
-//         }),
-//         m("ul", vnode.children),
-
-//         m("nav", [
-//             m("div", "" + List.list.length + " item left"),
-//             m("a", { href: "/All", oncreate: m.route.link }, "All"),
-//             m("a", { href: "/Active", oncreate: m.route.link }, "Active"),
-//             m("a", { href: "/Completed", oncreate: m.route.link }, "Completed"),
-//             m("button[type=button]", {
-//                 onclick: function() {
-//                     // List.list = [];
-//                     // List.listLen = 0;
-//                     var complete = List.displayList("Completed");
-//                     for (var i = 0; i < complete.length; i++) {
-//                         List.removeFromList(complete[i].id);
-//                     }
-//                 }
-//             }, "Clear Completed")
-//         ])
-//     ])
-// ])
 
 },{"../model/List":3,"mithril":1}]},{},[2]);
