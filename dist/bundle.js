@@ -1319,8 +1319,7 @@ var ToDoList = {
 
     },
 
-    toggleCompleted: function(id, checkbox) {   
-        // this.list[id].tag = "Completed"
+    toggleCompleted: function(id, checkbox) {
        task = {checkboxstate: !checkbox}
         return m.request({
             method: "PUT",
@@ -1336,12 +1335,6 @@ var ToDoList = {
 
 
     removeFromList: function(id) {
-        // this.list.splice(id, 1);
-        // for (var i = id; i < this.list.length; i++) {
-        //     this.list[i].id = this.list[i].id - 1
-            
-        // }
-        // this.checkAllComp();
          return m.request({
             method: "DELETE",
             url: "http://localhost:8000/tasks/" + id
@@ -1350,8 +1343,9 @@ var ToDoList = {
                 if(listItem._id == id){
                     ToDoList.list.splice(index, 1);
                 }
+                ToDoList.loadList();
+                m.redraw();
             })
-            m.redraw();
         })
     },
 
@@ -1361,15 +1355,6 @@ var ToDoList = {
             ToDoList.toggleCompleted(ToDoList.list[i]._id, !TF),
             console.log(ToDoList.list[i].checkboxstate)
         }
-        
-        // var allItems = this.displayList("Active");
-        // if (allItems.length == 0) {
-        //     console.log(this.allstatechecked)
-        //     this.allstatechecked = true
-        // } else {
-        //     console.log(this.allstatechecked)
-        //     this.allstatechecked = false
-        // }
     }
 }
     
