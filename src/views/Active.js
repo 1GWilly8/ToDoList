@@ -30,7 +30,7 @@ module.exports = {
                           m("span.input-group-btn ",
                             m("button.btn-no-marg", {
                                 onclick: function() {
-                                    List.removeFromList(index);
+                                    List.removeFromList(object._id);
                                 }
                             }, m("span.glyphicon glyphicon-remove delete-btn[aria-hidden='true']")))
                     ])
