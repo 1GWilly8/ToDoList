@@ -59,6 +59,7 @@ module.exports = {
                                         e.target.value = '';
                                         List.loadList();
                                         m.redraw();
+                                        List.allstatechecked = false;
                                     }
                                 }
                             })
