@@ -1273,9 +1273,6 @@ var ToDoList = {
             url: "http://localhost:8000/tasks",
             data: task
         })
-        .then(function(response){
-            ToDoList.list.push(response)
-        })
         
     },
 
