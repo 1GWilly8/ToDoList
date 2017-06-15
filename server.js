@@ -158,5 +158,14 @@ app.put('/tasks/:id', (req, res) => {
 });
 
 app.post('/tasks', (req, res) => {
-   
+    var tasks = Parse.Object.extend("tasks");
+    var task = new tasks();
+        task.save({checkboxstate: req.body.checkboxstate, text: req.body.text}, {
+        success: function(task) {
+            res.send(task);
+        },
+        error: function(object, error) {
+
+        }
+    });
 });
