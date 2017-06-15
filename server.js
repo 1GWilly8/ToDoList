@@ -68,12 +68,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 app.get('/tasks/:id', (req, res) => {
-    var tasks = Parse.Object.extend("tasks");
-    var query = new Parse.Query(tasks);
+    var query = new Parse.Query("tasks");
     const id = req.params.id;
     query.get(id, {
         success: function(tasks) {
             // The object was retrieved successfully.
+            res.send(response);
         },
         error: function(object, error) {
             // The object was not retrieved successfully.
@@ -83,12 +83,12 @@ app.get('/tasks/:id', (req, res) => {
 });
 
 app.get('/tasks/:checkboxstate', (req, res) => {
-    var tasks = Parse.Object.extend("tasks");
-    var query = new Parse.Query(tasks);
+    var query = new Parse.Query("tasks");
     query.equalTo("checkboxstate", req.params.checkboxstate)
     query.find({
-        success: function(tasks) {
+        success: function(response) {
             // The object was retrieved successfully.
+            res.send(response);
         },
         error: function(object, error) {
             // The object was not retrieved successfully.
@@ -98,11 +98,10 @@ app.get('/tasks/:checkboxstate', (req, res) => {
 });
 
 app.get('/tasks', (req, res) => {
-    var tasks = Parse.Object.extend("tasks");
-    var query = new Parse.Query(tasks);
+    var query = new Parse.Query("tasks");
     query.find({
-        success: function(tasks) {
-            // The object was retrieved successfully.
+        success: function(response) {
+            res.send(response);
         },
         error: function(object, error) {
             // The object was not retrieved successfully.
@@ -117,9 +116,9 @@ app.delete('/tasks/:id', (req, res) => {
     const id = req.params.id;
     query.get(id, {
         success: function(task) {
-            task.destroy(id, {
+            task.destroy({
                 success: function(task) {
-
+                    res.send(task);
                 },
                 error: function(object, error) {
 
@@ -135,8 +134,7 @@ app.delete('/tasks/:id', (req, res) => {
 });
 
 app.put('/tasks/:id', (req, res) => {
-    var tasks = Parse.Object.extend("tasks");
-    var query = new Parse.Query(tasks);
+    var query = new Parse.Query("tasks");
     const id = req.params.id;
     query.get(id, {
         success: function(task) {

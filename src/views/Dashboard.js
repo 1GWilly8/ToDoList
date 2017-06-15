@@ -5,7 +5,8 @@ var List = require("../model/List");
 
 module.exports = {
     oninit: function() {
-      List.loadList();
+    List.loadList();
+    console.log("Dash-oninit", arguments);
     },
     view: function() {
         var todos = List.displayList("All");
@@ -17,7 +18,7 @@ module.exports = {
                             type: "checkbox",
                             checked: object.checkboxstate,
                             onclick: function() {
-                              List.toggleCompleted(object._id, object.checkboxstate)
+                              List.toggleCompleted(object.objectId, object.checkboxstate)
                                 List.loadList();
                             }
                         })
@@ -26,7 +27,7 @@ module.exports = {
                         m("span.input-group-btn ",
                             m("button.btn-no-marg", {
                                 onclick: function() {
-                                    List.removeFromList(object._id);
+                                    List.removeFromList(object.objectId);
                                 }
                             }, m("span.glyphicon glyphicon-remove delete-btn[aria-hidden='true']")))
                     ])

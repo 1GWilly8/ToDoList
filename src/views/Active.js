@@ -16,8 +16,8 @@ module.exports = {
                             onclick: function() {
                               console.log("FFFF"),
                               console.log(object.checkboxstate),
-                              console.log(object._id),
-                              List.toggleCompleted(object._id, object.checkboxstate)
+                              console.log(object.objectId),
+                              List.toggleCompleted(object.objectId, object.checkboxstate)
                                 List.loadList();
                             }
 
@@ -27,7 +27,7 @@ module.exports = {
                           m("span.input-group-btn ",
                             m("button.btn-no-marg", {
                                 onclick: function() {
-                                    List.removeFromList(object._id);
+                                    List.removeFromList(object.objectId);
                                 }
                             }, m("span.glyphicon glyphicon-remove delete-btn[aria-hidden='true']")))
                     ])

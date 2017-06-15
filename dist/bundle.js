@@ -1288,7 +1288,7 @@ var ToDoList = {
         .then(function(response) {
             ToDoList.list = response
             var actList = ToDoList.displayList("Active");
-            console.log("---", ToDoList.allstatechecked)
+            //console.log("---", ToDoList.list)
               if (actList.length == 0) {
                 ToDoList.allstatechecked = true
               } else {
@@ -1335,24 +1335,25 @@ var ToDoList = {
 
 
     removeFromList: function(id) {
-         return m.request({
-            method: "DELETE",
-            url: "http://localhost:8000/tasks/" + id
+        return m.request({
+        method: "DELETE",
+        url: "http://localhost:8000/tasks/" + id
         }).then(function(response){
             ToDoList.list.forEach(function(listItem, index){
-                if(listItem._id == id){
+                if(listItem.objectId == id){
                     ToDoList.list.splice(index, 1);
                 }
                 ToDoList.loadList();
                 m.redraw();
             })
+        console.log("Item removed", arguments, ToDoList.list);
         })
     },
 
     toggleAllComp: function(TF) {
         for (var i = 0; i < ToDoList.list.length; i++) {
             console.log(i),
-            ToDoList.toggleCompleted(ToDoList.list[i]._id, !TF),
+            ToDoList.toggleCompleted(ToDoList.list[i].objectId, !TF),
             console.log(ToDoList.list[i].checkboxstate)
         }
     }
@@ -1378,8 +1379,8 @@ module.exports = {
                             onclick: function() {
                               console.log("FFFF"),
                               console.log(object.checkboxstate),
-                              console.log(object._id),
-                              List.toggleCompleted(object._id, object.checkboxstate)
+                              console.log(object.objectId),
+                              List.toggleCompleted(object.objectId, object.checkboxstate)
                                 List.loadList();
                             }
 
@@ -1389,7 +1390,7 @@ module.exports = {
                           m("span.input-group-btn ",
                             m("button.btn-no-marg", {
                                 onclick: function() {
-                                    List.removeFromList(object._id);
+                                    List.removeFromList(object.objectId);
                                 }
                             }, m("span.glyphicon glyphicon-remove delete-btn[aria-hidden='true']")))
                     ])
@@ -1418,8 +1419,8 @@ module.exports = {
                                 onclick: function() {
                                   console.log("FFFF"),
                                   console.log(object.checkboxstate),
-                                  console.log(object._id),
-                                  List.toggleCompleted(object._id, object.checkboxstate)
+                                  console.log(object.objectId),
+                                  List.toggleCompleted(object.objectId, object.checkboxstate)
                                     List.loadList();
                                 }
                             })
@@ -1428,7 +1429,7 @@ module.exports = {
                         m("span.input-group-btn ",
                             m("button.btn-no-marg", {
                                 onclick: function() {
-                                    List.removeFromList(object._id);
+                                    List.removeFromList(object.objectId);
                                 }
                             }, m("span.glyphicon glyphicon-remove delete-btn[aria-hidden='true']")))
                     ])
@@ -1446,7 +1447,8 @@ var List = require("../model/List");
 
 module.exports = {
     oninit: function() {
-      List.loadList();
+    List.loadList();
+    console.log("Dash-oninit", arguments);
     },
     view: function() {
         var todos = List.displayList("All");
@@ -1458,7 +1460,7 @@ module.exports = {
                             type: "checkbox",
                             checked: object.checkboxstate,
                             onclick: function() {
-                              List.toggleCompleted(object._id, object.checkboxstate)
+                              List.toggleCompleted(object.objectId, object.checkboxstate)
                                 List.loadList();
                             }
                         })
@@ -1467,7 +1469,7 @@ module.exports = {
                         m("span.input-group-btn ",
                             m("button.btn-no-marg", {
                                 onclick: function() {
-                                    List.removeFromList(object._id);
+                                    List.removeFromList(object.objectId);
                                 }
                             }, m("span.glyphicon glyphicon-remove delete-btn[aria-hidden='true']")))
                     ])
@@ -1485,7 +1487,7 @@ module.exports = {
     oninit: function() {
         List.loadList();
         var actList = List.displayList("Active");
-        console.log("---", List.allstatechecked);
+        console.log("---1", List.allstatechecked);
           if (actList.length == 0) {
             console.log("t"),
             List.allstatechecked = true
@@ -1562,7 +1564,7 @@ module.exports = {
                             onclick: function() {
                                 var complete = List.displayList("Completed");
                                 for (var i = 0; i < complete.length; i++) {
-                                    List.removeFromList(complete[i]._id);
+                                    List.removeFromList(complete[i].objectId);
                                 }
                                 m.redraw();
                             }

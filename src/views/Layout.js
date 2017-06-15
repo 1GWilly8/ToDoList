@@ -6,7 +6,7 @@ module.exports = {
     oninit: function() {
         List.loadList();
         var actList = List.displayList("Active");
-        console.log("---", List.allstatechecked);
+        console.log("---1", List.allstatechecked);
           if (actList.length == 0) {
             console.log("t"),
             List.allstatechecked = true
@@ -83,7 +83,7 @@ module.exports = {
                             onclick: function() {
                                 var complete = List.displayList("Completed");
                                 for (var i = 0; i < complete.length; i++) {
-                                    List.removeFromList(complete[i]._id);
+                                    List.removeFromList(complete[i].objectId);
                                 }
                                 m.redraw();
                             }

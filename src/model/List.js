@@ -28,7 +28,7 @@ var ToDoList = {
         .then(function(response) {
             ToDoList.list = response
             var actList = ToDoList.displayList("Active");
-            console.log("---", ToDoList.allstatechecked)
+            //console.log("---", ToDoList.list)
               if (actList.length == 0) {
                 ToDoList.allstatechecked = true
               } else {
@@ -75,24 +75,25 @@ var ToDoList = {
 
 
     removeFromList: function(id) {
-         return m.request({
-            method: "DELETE",
-            url: "http://localhost:8000/tasks/" + id
+        return m.request({
+        method: "DELETE",
+        url: "http://localhost:8000/tasks/" + id
         }).then(function(response){
             ToDoList.list.forEach(function(listItem, index){
-                if(listItem._id == id){
+                if(listItem.objectId == id){
                     ToDoList.list.splice(index, 1);
                 }
                 ToDoList.loadList();
                 m.redraw();
             })
+        console.log("Item removed", arguments, ToDoList.list);
         })
     },
 
     toggleAllComp: function(TF) {
         for (var i = 0; i < ToDoList.list.length; i++) {
             console.log(i),
-            ToDoList.toggleCompleted(ToDoList.list[i]._id, !TF),
+            ToDoList.toggleCompleted(ToDoList.list[i].objectId, !TF),
             console.log(ToDoList.list[i].checkboxstate)
         }
     }
