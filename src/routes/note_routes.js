@@ -4,7 +4,7 @@ var ObjectID = require('mongodb').ObjectID;
 module.exports = function(app, db) {
     app.get('/tasks/:id', (req, res) => {
         const id = req.params.id;
-        const details = { '_id': new ObjectID(id) };
+        const details = { '_id': id };
         db.collection('tasks').findOne(details, (err, item) => {
             if (err) {
                 res.send({ 'error': 'An error has occurred' });
@@ -38,7 +38,7 @@ module.exports = function(app, db) {
 
     app.delete('/tasks/:id', (req, res) => {
         const id = req.params.id;
-        const details = { '_id': new ObjectID(id) };
+        const details = { '_id': id };
         db.collection('tasks').remove(details, (err, item) => {
             if (err) {
                 res.send({ 'error': 'An error has occurred' });
@@ -50,7 +50,7 @@ module.exports = function(app, db) {
 
     app.put('/tasks/:id', (req, res) => {
         const id = req.params.id;
-        const details = { '_id': new ObjectID(id) };
+        const details = { '_id': id };
         const task = {$set: {}};
         for (key in req.body) {
             task['$set'][key] = req.body[key]
